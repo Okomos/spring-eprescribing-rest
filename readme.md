@@ -1,60 +1,60 @@
-# REST version of Spring PetClinic Sample Application (spring-framework-petclinic extend ) 
+# REST version of Spring eprescribing Sample Application (spring-framework-eprescribing extend ) 
 
-[![Java Build Status](https://github.com/spring-petclinic/spring-petclinic-rest/actions/workflows/maven-build.yml/badge.svg)](https://github.com/spring-petclinic/spring-petclinic-rest/actions/workflows/maven-build.yml)
-[![Docker Build Status](https://github.com/spring-petclinic/spring-petclinic-rest/actions/workflows/docker-build.yml/badge.svg)](https://github.com/spring-petclinic/spring-petclinic-rest/actions/workflows/docker-build.yml)
+[![Java Build Status](https://github.com/spring-eprescribing/spring-eprescribing-rest/actions/workflows/maven-build.yml/badge.svg)](https://github.com/spring-eprescribing/spring-eprescribing-rest/actions/workflows/maven-build.yml)
+[![Docker Build Status](https://github.com/spring-eprescribing/spring-eprescribing-rest/actions/workflows/docker-build.yml/badge.svg)](https://github.com/spring-eprescribing/spring-eprescribing-rest/actions/workflows/docker-build.yml)
 
-This backend version of the Spring Petclinic application only provides a REST API. **There is no UI**.
-The [spring-petclinic-angular project](https://github.com/spring-petclinic/spring-petclinic-angular) is a Angular front-end application which consumes the REST API.
+This backend version of the Spring eprescribing application only provides a REST API. **There is no UI**.
+The [spring-eprescribing-angular project](https://github.com/spring-eprescribing/spring-eprescribing-angular) is a Angular front-end application which consumes the REST API.
 
-## Understanding the Spring Petclinic application with a few diagrams
+## Understanding the Spring eprescribing application with a few diagrams
 
-[See the presentation of the Spring Petclinic Framework version](http://fr.slideshare.net/AntoineRey/spring-framework-petclinic-sample-application)
+[See the presentation of the Spring eprescribing Framework version](http://fr.slideshare.net/AntoineRey/spring-framework-eprescribing-sample-application)
 
-### Petclinic ER Model
+### eprescribing ER Model
 
-![alt petclinic-ermodel](petclinic-ermodel.png)
+![alt eprescribing-ermodel](eprescribing-ermodel.png)
 
-## Running petclinic locally
+## Running eprescribing locally
 
 ### With maven command line
 ```
-git clone https://github.com/spring-petclinic/spring-petclinic-rest.git
-cd spring-petclinic-rest
+git clone https://github.com/spring-eprescribing/spring-eprescribing-rest.git
+cd spring-eprescribing-rest
 ./mvnw spring-boot:run
 ```
 
 ### With Docker
 ```
-docker run -p 9966:9966 springcommunity/spring-petclinic-rest
+docker run -p 9966:9966 springcommunity/spring-eprescribing-rest
 ```
 
-You can then access petclinic here: [http://localhost:9966/petclinic/](http://localhost:9966/petclinic/)
+You can then access eprescribing here: [http://localhost:9966/eprescribing/](http://localhost:9966/eprescribing/)
 
 There are actuator health check and info routes as well: 
-* [http://localhost:9966/petclinic/actuator/health](http://localhost:9966/petclinic/actuator/health)
-* [http://localhost:9966/petclinic/actuator/info](http://localhost:9966/petclinic/actuator/info)
+* [http://localhost:9966/eprescribing/actuator/health](http://localhost:9966/eprescribing/actuator/health)
+* [http://localhost:9966/eprescribing/actuator/info](http://localhost:9966/eprescribing/actuator/info)
 
 ## OpenAPI REST API documentation presented here (after application start):
 
 You can reach the swagger UI with this URL
-[http://localhost:9966/petclinic/](http://localhost:9966/petclinic/swagger-ui.html).
+[http://localhost:9966/eprescribing/](http://localhost:9966/eprescribing/swagger-ui.html).
 
-You then can get the Open API description reaching this URL [localhost:9966/petclinic/v3/api-docs](localhost:9966/petclinic/v3/api-docs).
+You then can get the Open API description reaching this URL [localhost:9966/eprescribing/v3/api-docs](localhost:9966/eprescribing/v3/api-docs).
 
 ## Screenshot of the Angular client
 
-<img width="1427" alt="spring-petclinic-angular2" src="https://cloud.githubusercontent.com/assets/838318/23263243/f4509c4a-f9dd-11e6-951b-69d0ef72d8bd.png">
+<img width="1427" alt="spring-eprescribing-angular2" src="https://cloud.githubusercontent.com/assets/838318/23263243/f4509c4a-f9dd-11e6-951b-69d0ef72d8bd.png">
 
-## In case you find a bug/suggested improvement for Spring Petclinic
-Our issue tracker is available here: https://github.com/spring-petclinic/spring-petclinic-rest/issues
+## In case you find a bug/suggested improvement for Spring eprescribing
+Our issue tracker is available here: https://github.com/spring-eprescribing/spring-eprescribing-rest/issues
 
 
 ## Database configuration
 
-In its default configuration, Petclinic uses an in-memory database (HSQLDB) which
+In its default configuration, eprescribing uses an in-memory database (HSQLDB) which
 gets populated at startup with data.
 A similar setups is provided for MySql and PostgreSQL in case a persistent database configuration is needed.
-To run petclinic locally using persistent database, it is needed to change profile defined in application.properties file.
+To run eprescribing locally using persistent database, it is needed to change profile defined in application.properties file.
 
 For MySQL database, it is needed to change param "hsqldb" to "mysql" in string
 ```
@@ -65,9 +65,9 @@ spring.profiles.active=hsqldb,spring-data-jpa
 Before do this, would be good to check properties defined in application-mysql.properties file.
 
 ```
-spring.datasource.url = jdbc:mysql://localhost:3306/petclinic?useUnicode=true
+spring.datasource.url = jdbc:mysql://localhost:3306/eprescribing?useUnicode=true
 spring.datasource.username=pc
-spring.datasource.password=petclinic 
+spring.datasource.password=eprescribing 
 spring.datasource.driver-class-name=com.mysql.jdbc.Driver 
 spring.jpa.database=MYSQL
 spring.jpa.database-platform=org.hibernate.dialect.MySQLDialect
@@ -77,7 +77,7 @@ spring.jpa.hibernate.ddl-auto=none
 You may also start a MySql database with docker:
 
 ```
-docker run --name mysql-petclinic -e MYSQL_ROOT_PASSWORD=petclinic -e MYSQL_DATABASE=petclinic -p 3306:3306 mysql:5.7.8
+docker run --name mysql-eprescribing -e MYSQL_ROOT_PASSWORD=eprescribing -e MYSQL_DATABASE=eprescribing -p 3306:3306 mysql:5.7.8
 ```
 
 For PostgeSQL database, it is needed to change param "hsqldb" to "postgresql" in string
@@ -89,9 +89,9 @@ spring.profiles.active=hsqldb,spring-data-jpa
 Before do this, would be good to check properties defined in application-postgresql.properties file.
 
 ```
-spring.datasource.url=jdbc:postgresql://localhost:5432/petclinic
+spring.datasource.url=jdbc:postgresql://localhost:5432/eprescribing
 spring.datasource.username=postgres
-spring.datasource.password=petclinic
+spring.datasource.password=eprescribing
 spring.datasource.driver-class-name=org.postgresql.Driver
 spring.jpa.database=POSTGRESQL
 spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
@@ -100,7 +100,7 @@ spring.jpa.hibernate.ddl-auto=none
 You may also start a Postgres database with docker:
 
 ```
-docker run --name postgres-petclinic -e POSTGRES_PASSWORD=petclinic -e POSTGRES_DB=petclinic -p 5432:5432 -d postgres:9.6.0
+docker run --name postgres-eprescribing -e POSTGRES_PASSWORD=eprescribing -e POSTGRES_DB=eprescribing -p 5432:5432 -d postgres:9.6.0
 ```
 ## API First Approach
 
@@ -126,8 +126,8 @@ Here is a list of the generated packages and the corresponding tooling:
 
 | Package name                                   | Tool             |
 |------------------------------------------------|------------------|
-| org.springframework.samples.petclinic.mapper   | [MapStruct](https://mapstruct.org/)        |
-| org.springframework.samples.petclinic.rest.dto | [OpenAPI Generator maven plugin](https://github.com/OpenAPITools/openapi-generator/) |
+| org.springframework.samples.eprescribing.mapper   | [MapStruct](https://mapstruct.org/)        |
+| org.springframework.samples.eprescribing.rest.dto | [OpenAPI Generator maven plugin](https://github.com/OpenAPITools/openapi-generator/) |
 
 
 To get both, you have to run the following command:
@@ -137,12 +137,12 @@ mvn clean install
 ```
 
 ## Security configuration
-In its default configuration, Petclinic doesn't have authentication and authorization enabled.
+In its default configuration, eprescribing doesn't have authentication and authorization enabled.
 
 ### Basic Authentication
 In order to use the basic authentication functionality, turn in on from the application.properties file
 ```
-petclinic.security.enable=true
+eprescribing.security.enable=true
 ```
 This will secure all APIs and in order to access them, basic authentication is required.
 Apart from authentication, APIs also require authorization. This is done via roles that a user can have.
@@ -165,7 +165,7 @@ POST /api/users
 }
 ```
 
-## Working with Petclinic in Eclipse/STS
+## Working with eprescribing in Eclipse/STS
 
 ### prerequisites
 The following items should be installed in your system:
@@ -181,7 +181,7 @@ If m2e is not there, just follow the install process here: http://eclipse.org/m2
 
 1) In the command line
 ```
-git clone https://github.com/spring-petclinic/spring-petclinic-rest.git
+git clone https://github.com/spring-eprescribing/spring-eprescribing-rest.git
 ```
 2) Inside Eclipse
 ```
@@ -193,42 +193,42 @@ File -> Import -> Maven -> Existing Maven project
 
 | Layer | Source |
 |--|--|
-| REST API controllers | [REST folder](src/main/java/org/springframework/samples/petclinic/rest) |
-| Service | [ClinicServiceImpl.java](src/main/java/org/springframework/samples/petclinic/service/ClinicServiceImpl.java) |
-| JDBC | [jdbc folder](src/main/java/org/springframework/samples/petclinic/repository/jdbc) |
-| JPA | [jpa folder](src/main/java/org/springframework/samples/petclinic/repository/jpa) |
-| Spring Data JPA | [springdatajpa folder](src/main/java/org/springframework/samples/petclinic/repository/springdatajpa) |
-| Tests | [AbstractClinicServiceTests.java](src/test/java/org/springframework/samples/petclinic/service/clinicService/AbstractClinicServiceTests.java) |
+| REST API controllers | [REST folder](src/main/java/org/springframework/samples/eprescribing/rest) |
+| Service | [ClinicServiceImpl.java](src/main/java/org/springframework/samples/eprescribing/service/ClinicServiceImpl.java) |
+| JDBC | [jdbc folder](src/main/java/org/springframework/samples/eprescribing/repository/jdbc) |
+| JPA | [jpa folder](src/main/java/org/springframework/samples/eprescribing/repository/jpa) |
+| Spring Data JPA | [springdatajpa folder](src/main/java/org/springframework/samples/eprescribing/repository/springdatajpa) |
+| Tests | [AbstractClinicServiceTests.java](src/test/java/org/springframework/samples/eprescribing/service/clinicService/AbstractClinicServiceTests.java) |
 
 
 ## Publishing a Docker image
 
 This application uses [Google Jib]([https://github.com/GoogleContainerTools/jib) to build an optimized Docker image
-into the [Docker Hub](https://cloud.docker.com/u/springcommunity/repository/docker/springcommunity/spring-petclinic-rest/)
+into the [Docker Hub](https://cloud.docker.com/u/springcommunity/repository/docker/springcommunity/spring-eprescribing-rest/)
 repository.
-The [pom.xml](pom.xml) has been configured to publish the image with a the `springcommunity/spring-petclinic-rest`image name.
+The [pom.xml](pom.xml) has been configured to publish the image with a the `springcommunity/spring-eprescribing-rest`image name.
 
 Command line to run:
 ```
 mvn compile jib:build -X -DjibSerialize=true -Djib.to.auth.username=xxx -Djib.to.auth.password=xxxxx
 ```
 
-## Interesting Spring Petclinic forks
+## Interesting Spring eprescribing forks
 
-The Spring Petclinic master branch in the main [spring-projects](https://github.com/spring-projects/spring-petclinic)
+The Spring eprescribing master branch in the main [spring-projects](https://github.com/spring-projects/spring-eprescribing)
 GitHub org is the "canonical" implementation, currently based on Spring Boot and Thymeleaf.
 
-This [spring-petclinic-rest](https://github.com/spring-petclinic/spring-petclinic-rest/) project is one of the [several forks](https://spring-petclinic.github.io/docs/forks.html) 
-hosted in a special GitHub org: [spring-petclinic](https://github.com/spring-petclinic).
+This [spring-eprescribing-rest](https://github.com/spring-eprescribing/spring-eprescribing-rest/) project is one of the [several forks](https://spring-eprescribing.github.io/docs/forks.html) 
+hosted in a special GitHub org: [spring-eprescribing](https://github.com/spring-eprescribing).
 If you have a special interest in a different technology stack
 that could be used to implement the Pet Clinic then please join the community there.
 
 
 # Contributing
 
-The [issue tracker](https://github.com/spring-petclinic/spring-petclinic-rest/issues) is the preferred channel for bug reports, features requests and submitting pull requests.
+The [issue tracker](https://github.com/spring-eprescribing/spring-eprescribing-rest/issues) is the preferred channel for bug reports, features requests and submitting pull requests.
 
-For pull requests, editor preferences are available in the [editor config](https://github.com/spring-petclinic/spring-petclinic-rest/blob/master/.editorconfig) for easy use in common text editors. Read more and download plugins at <http://editorconfig.org>.
+For pull requests, editor preferences are available in the [editor config](https://github.com/spring-eprescribing/spring-eprescribing-rest/blob/master/.editorconfig) for easy use in common text editors. Read more and download plugins at <http://editorconfig.org>.
 
 
 

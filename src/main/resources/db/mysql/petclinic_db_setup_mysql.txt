@@ -1,5 +1,5 @@
 ================================================================================
-===        Spring PetClinic sample application - MySQL Configuration         ===
+===        Spring eprescribing sample application - MySQL Configuration         ===
 ================================================================================
 
 @author Sam Brannen
@@ -13,7 +13,7 @@
    README.md for the Docker command line.
 
 
-2) Create the PetClinic database and user by executing the "db/mysql/initDB.sql"
+2) Create the eprescribing database and user by executing the "db/mysql/initDB.sql"
 and "db/mysql/populateDB.sql" scripts. Or uncomment strings
 #spring.datasource.schema=classpath*:db/mysql/initDB.sql
 #spring.datasource.data=classpath*:db/mysql/populateDB.sql

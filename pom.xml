@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.springframework.samples</groupId>
-    <artifactId>spring-petclinic-rest</artifactId>
+    <artifactId>spring-eprescribing-rest</artifactId>
     <version>3.2.1</version>
 
-    <description>REST version of the Spring Petclinic sample application</description>
-    <url>https://spring-petclinic.github.io/</url>
+    <description>REST version of the Spring eprescribing sample application</description>
+    <url>https://spring-eprescribing.github.io/</url>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -190,8 +190,8 @@
                 <configuration>
                     <excludes>
                         <!-- Generated code -->
-                        <exclude>**/org/springframework/samples/petclinic/rest/dto/**</exclude>
-                        <exclude>**/org/springframework/samples/petclinic/rest/api/**</exclude>
+                        <exclude>**/org/springframework/samples/eprescribing/rest/dto/**</exclude>
+                        <exclude>**/org/springframework/samples/eprescribing/rest/api/**</exclude>
                     </excludes>
                 </configuration>
                 <executions>
@@ -269,16 +269,16 @@
 
                             <!-- Only enabling model andopenapi-generator-maven-plugin API generation -->
                             <modelNameSuffix>Dto</modelNameSuffix>
-                            <apiPackage>org.springframework.samples.petclinic.rest.api</apiPackage>
+                            <apiPackage>org.springframework.samples.eprescribing.rest.api</apiPackage>
                             <generateModels>true</generateModels>
-                            <modelPackage>org.springframework.samples.petclinic.rest.dto</modelPackage>
+                            <modelPackage>org.springframework.samples.eprescribing.rest.dto</modelPackage>
                             <!--
                             <generateSupportingFiles>true</generateSupportingFiles>
                             <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>
                             -->
                             <generateApis>true</generateApis>
                             <configOptions>
-                                <!-- RestController implementation is provided by Petclinic developers -->
+                                <!-- RestController implementation is provided by eprescribing developers -->
                                 <interfaceOnly>true</interfaceOnly>
                                 <!-- Activating Java 8 features -->
                                 <performBeanValidation>true</performBeanValidation>
