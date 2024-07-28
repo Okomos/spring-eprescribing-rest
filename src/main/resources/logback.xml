@@ -14,7 +14,7 @@
     </appender>
 
     <!--<logger name="org.hibernate" level="debug"/> -->
-    <logger name="org.springframework.samples.eprescribing" level="debug"/>
+    <logger name="org.springframework.labs.eprescribing" level="debug"/>
 
     <root level="info">
         <appender-ref ref="console"/>

@@ -5,7 +5,7 @@
             "name": "Spring Boot-ePrescribingApplication<spring-eprescribing-rest>",
             "request": "launch",
             "cwd": "${workspaceFolder}",
-            "mainClass": "org.springframework.samples.eprescribing.eprescribingApplication",
+            "mainClass": "org.springframework.labs.eprescribing.eprescribingApplication",
             "projectName": "spring-eprescribing-rest",
             "args": "",
             "envFile": "${workspaceFolder}/.env"

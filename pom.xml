@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.springframework.samples</groupId>
+    <groupId>org.springframework.labs</groupId>
     <artifactId>spring-eprescribing-rest</artifactId>
     <version>3.2.1</version>
 
@@ -190,8 +190,8 @@
                 <configuration>
                     <excludes>
                         <!-- Generated code -->
-                        <exclude>**/org/springframework/samples/eprescribing/rest/dto/**</exclude>
-                        <exclude>**/org/springframework/samples/eprescribing/rest/api/**</exclude>
+                        <exclude>**/org/springframework/labs/eprescribing/rest/dto/**</exclude>
+                        <exclude>**/org/springframework/labs/eprescribing/rest/api/**</exclude>
                     </excludes>
                 </configuration>
                 <executions>
@@ -269,9 +269,9 @@
 
                             <!-- Only enabling model andopenapi-generator-maven-plugin API generation -->
                             <modelNameSuffix>Dto</modelNameSuffix>
-                            <apiPackage>org.springframework.samples.eprescribing.rest.api</apiPackage>
+                            <apiPackage>org.springframework.labs.eprescribing.rest.api</apiPackage>
                             <generateModels>true</generateModels>
-                            <modelPackage>org.springframework.samples.eprescribing.rest.dto</modelPackage>
+                            <modelPackage>org.springframework.labs.eprescribing.rest.dto</modelPackage>
                             <!--
                             <generateSupportingFiles>true</generateSupportingFiles>
                             <supportingFilesToGenerate>ApiUtil.java</supportingFilesToGenerate>

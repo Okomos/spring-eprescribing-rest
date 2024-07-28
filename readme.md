@@ -126,8 +126,8 @@ Here is a list of the generated packages and the corresponding tooling:
 
 | Package name                                   | Tool             |
 |------------------------------------------------|------------------|
-| org.springframework.samples.eprescribing.mapper   | [MapStruct](https://mapstruct.org/)        |
-| org.springframework.samples.eprescribing.rest.dto | [OpenAPI Generator maven plugin](https://github.com/OpenAPITools/openapi-generator/) |
+| org.springframework.labs.eprescribing.mapper   | [MapStruct](https://mapstruct.org/)        |
+| org.springframework.labs.eprescribing.rest.dto | [OpenAPI Generator maven plugin](https://github.com/OpenAPITools/openapi-generator/) |
 
 
 To get both, you have to run the following command:
@@ -193,12 +193,12 @@ File -> Import -> Maven -> Existing Maven project
 
 | Layer | Source |
 |--|--|
-| REST API controllers | [REST folder](src/main/java/org/springframework/samples/eprescribing/rest) |
-| Service | [ClinicServiceImpl.java](src/main/java/org/springframework/samples/eprescribing/service/ClinicServiceImpl.java) |
-| JDBC | [jdbc folder](src/main/java/org/springframework/samples/eprescribing/repository/jdbc) |
-| JPA | [jpa folder](src/main/java/org/springframework/samples/eprescribing/repository/jpa) |
-| Spring Data JPA | [springdatajpa folder](src/main/java/org/springframework/samples/eprescribing/repository/springdatajpa) |
-| Tests | [AbstractClinicServiceTests.java](src/test/java/org/springframework/samples/eprescribing/service/clinicService/AbstractClinicServiceTests.java) |
+| REST API controllers | [REST folder](src/main/java/org/springframework/labs/eprescribing/rest) |
+| Service | [ClinicServiceImpl.java](src/main/java/org/springframework/labs/eprescribing/service/ClinicServiceImpl.java) |
+| JDBC | [jdbc folder](src/main/java/org/springframework/labs/eprescribing/repository/jdbc) |
+| JPA | [jpa folder](src/main/java/org/springframework/labs/eprescribing/repository/jpa) |
+| Spring Data JPA | [springdatajpa folder](src/main/java/org/springframework/labs/eprescribing/repository/springdatajpa) |
+| Tests | [AbstractClinicServiceTests.java](src/test/java/org/springframework/labs/eprescribing/service/clinicService/AbstractClinicServiceTests.java) |
 
 
 ## Publishing a Docker image
