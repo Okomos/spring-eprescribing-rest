@@ -19,7 +19,7 @@ package org.springframework.labs.eprescribing.repository.springdatajpa;
 import org.springframework.context.annotation.Profile;
 import org.springframework.labs.eprescribing.model.Pet;
 import org.springframework.labs.eprescribing.model.PetType;
-import org.springframework.labs.eprescribing.model.Visit;
+import org.springframework.labs.eprescribing.model.Prescription;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -44,9 +44,9 @@ public class SpringDataPetTypeRepositoryImpl implements PetTypeRepositoryOverrid
 
 		List<Pet> pets = this.em.createQuery("SELECT pet FROM Pet pet WHERE type.id=" + petTypeId).getResultList();
 		for (Pet pet : pets){
-			List<Visit> visits = pet.getVisits();
-			for (Visit visit : visits){
-				this.em.createQuery("DELETE FROM Visit visit WHERE id=" + visit.getId()).executeUpdate();
+			List<Prescription> prescriptions = pet.getPrescriptions();
+			for (Prescription prescription : prescriptions){
+				this.em.createQuery("DELETE FROM Prescription prescription WHERE id=" + prescription.getId()).executeUpdate();
 			}
 			this.em.createQuery("DELETE FROM Pet pet WHERE id=" + pet.getId()).executeUpdate();
 		}

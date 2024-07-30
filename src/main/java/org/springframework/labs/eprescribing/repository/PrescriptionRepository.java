@@ -20,10 +20,10 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.labs.eprescribing.model.BaseEntity;
-import org.springframework.labs.eprescribing.model.Visit;
+import org.springframework.labs.eprescribing.model.Prescription;
 
 /**
- * Repository class for <code>Visit</code> domain objects All method names are compliant with Spring Data naming
+ * Repository class for <code>Prescription</code> domain objects All method names are compliant with Spring Data naming
  * conventions so this interface can easily be extended for Spring Data See here: http://static.springsource.org/spring-data/jpa/docs/current/reference/html/jpa.repositories.html#jpa.query-methods.query-creation
  *
  * @author Ken Krebs
@@ -32,22 +32,22 @@ import org.springframework.labs.eprescribing.model.Visit;
  * @author Michael Isvy
  * @author Vitaliy Fedoriv
  */
-public interface VisitRepository {
+public interface PrescriptionRepository {
 
     /**
-     * Save a <code>Visit</code> to the data store, either inserting or updating it.
+     * Save a <code>Prescription</code> to the data store, either inserting or updating it.
      *
-     * @param visit the <code>Visit</code> to save
+     * @param prescription the <code>Prescription</code> to save
      * @see BaseEntity#isNew
      */
-    void save(Visit visit) throws DataAccessException;
+    void save(Prescription prescription) throws DataAccessException;
 
-    List<Visit> findByPetId(Integer petId);
+    List<Prescription> findByPetId(Integer petId);
     
-	Visit findById(int id) throws DataAccessException;
+	Prescription findById(int id) throws DataAccessException;
 	
-	Collection<Visit> findAll() throws DataAccessException;
+	Collection<Prescription> findAll() throws DataAccessException;
 
-	void delete(Visit visit) throws DataAccessException;
+	void delete(Prescription prescription) throws DataAccessException;
 
 }

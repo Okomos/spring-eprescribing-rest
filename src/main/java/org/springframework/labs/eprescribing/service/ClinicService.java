@@ -25,7 +25,7 @@ import org.springframework.labs.eprescribing.model.Pet;
 import org.springframework.labs.eprescribing.model.PetType;
 import org.springframework.labs.eprescribing.model.Specialty;
 import org.springframework.labs.eprescribing.model.Vet;
-import org.springframework.labs.eprescribing.model.Visit;
+import org.springframework.labs.eprescribing.model.Prescription;
 
 /**
  * Mostly used as a facade so all controllers have a single point of entry
@@ -40,11 +40,11 @@ public interface ClinicService {
 	void savePet(Pet pet) throws DataAccessException;
 	void deletePet(Pet pet) throws DataAccessException;
 
-	Collection<Visit> findVisitsByPetId(int petId);
-	Visit findVisitById(int visitId) throws DataAccessException;
-	Collection<Visit> findAllVisits() throws DataAccessException;
-	void saveVisit(Visit visit) throws DataAccessException;
-	void deleteVisit(Visit visit) throws DataAccessException;
+	Collection<Prescription> findPrescriptionsByPetId(int petId);
+	Prescription findPrescriptionById(int prescriptionId) throws DataAccessException;
+	Collection<Prescription> findAllPrescriptions() throws DataAccessException;
+	void savePrescription(Prescription prescription) throws DataAccessException;
+	void deletePrescription(Prescription prescription) throws DataAccessException;
 	Vet findVetById(int id) throws DataAccessException;
 	Collection<Vet> findVets() throws DataAccessException;
 	Collection<Vet> findAllVets() throws DataAccessException;

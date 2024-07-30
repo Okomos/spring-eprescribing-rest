@@ -45,7 +45,7 @@ public class Pet extends NamedEntity {
     private Owner owner;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "pet", fetch = FetchType.EAGER)
-    private Set<Visit> visits;
+    private Set<Prescription> prescriptions;
 
     public LocalDate getBirthDate() {
         return this.birthDate;
@@ -71,30 +71,30 @@ public class Pet extends NamedEntity {
         this.owner = owner;
     }
 
-    protected Set<Visit> getVisitsInternal() {
-        if (this.visits == null) {
-            this.visits = new HashSet<>();
+    protected Set<Prescription> getPrescriptionsInternal() {
+        if (this.prescriptions == null) {
+            this.prescriptions = new HashSet<>();
         }
-        return this.visits;
+        return this.prescriptions;
     }
 
-    protected void setVisitsInternal(Set<Visit> visits) {
-        this.visits = visits;
+    protected void setPrescriptionsInternal(Set<Prescription> prescriptions) {
+        this.prescriptions = prescriptions;
     }
 
-    public List<Visit> getVisits() {
-        List<Visit> sortedVisits = new ArrayList<>(getVisitsInternal());
-        PropertyComparator.sort(sortedVisits, new MutableSortDefinition("date", false, false));
-        return Collections.unmodifiableList(sortedVisits);
+    public List<Prescription> getPrescriptions() {
+        List<Prescription> sortedPrescriptions = new ArrayList<>(getPrescriptionsInternal());
+        PropertyComparator.sort(sortedPrescriptions, new MutableSortDefinition("date", false, false));
+        return Collections.unmodifiableList(sortedPrescriptions);
     }
 
-    public void setVisits(List<Visit> visits) {
-        this.visits = new HashSet<>(visits);
+    public void setPrescriptions(List<Prescription> prescriptions) {
+        this.prescriptions = new HashSet<>(prescriptions);
     }
 
-    public void addVisit(Visit visit) {
-        getVisitsInternal().add(visit);
-        visit.setPet(this);
+    public void addPrescription(Prescription prescription) {
+        getPrescriptionsInternal().add(prescription);
+        prescription.setPet(this);
     }
 
 }

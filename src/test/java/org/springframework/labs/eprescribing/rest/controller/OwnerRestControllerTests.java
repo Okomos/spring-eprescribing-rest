@@ -27,7 +27,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.labs.eprescribing.mapper.OwnerMapper;
 import org.springframework.labs.eprescribing.mapper.PetMapper;
-import org.springframework.labs.eprescribing.mapper.VisitMapper;
+import org.springframework.labs.eprescribing.mapper.PrescriptionMapper;
 import org.springframework.labs.eprescribing.model.Owner;
 import org.springframework.labs.eprescribing.model.Pet;
 import org.springframework.labs.eprescribing.rest.advice.ExceptionControllerAdvice;
@@ -36,7 +36,7 @@ import org.springframework.labs.eprescribing.service.ClinicService;
 import org.springframework.labs.eprescribing.rest.dto.OwnerDto;
 import org.springframework.labs.eprescribing.rest.dto.PetDto;
 import org.springframework.labs.eprescribing.rest.dto.PetTypeDto;
-import org.springframework.labs.eprescribing.rest.dto.VisitDto;
+import org.springframework.labs.eprescribing.rest.dto.PrescriptionDto;
 import org.springframework.labs.eprescribing.service.clinicService.ApplicationTestConfig;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ContextConfiguration;
@@ -75,7 +75,7 @@ class OwnerRestControllerTests {
     private PetMapper petMapper;
 
     @Autowired
-    private VisitMapper visitMapper;
+    private PrescriptionMapper prescriptionMapper;
 
     @MockBean
     private ClinicService clinicService;
@@ -86,7 +86,7 @@ class OwnerRestControllerTests {
 
     private List<PetDto> pets;
 
-    private List<VisitDto> visits;
+    private List<PrescriptionDto> prescriptions;
 
     @BeforeEach
     void initOwners() {
@@ -121,32 +121,32 @@ class OwnerRestControllerTests {
             .birthDate(LocalDate.now())
             .type(petType));
 
-        visits = new ArrayList<>();
-        VisitDto visit = new VisitDto();
-        visit.setId(2);
-        visit.setPetId(pet.getId());
-        visit.setDate(LocalDate.now());
-        visit.setDescription("rabies shot");
-        visits.add(visit);
+        prescriptions = new ArrayList<>();
+        PrescriptionDto prescription = new PrescriptionDto();
+        prescription.setId(2);
+        prescription.setPetId(pet.getId());
+        prescription.setDate(LocalDate.now());
+        prescription.setDescription("rabies shot");
+        prescriptions.add(prescription);
 
-        visit = new VisitDto();
-        visit.setId(3);
-        visit.setPetId(pet.getId());
-        visit.setDate(LocalDate.now());
-        visit.setDescription("neutered");
-        visits.add(visit);
+        prescription = new PrescriptionDto();
+        prescription.setId(3);
+        prescription.setPetId(pet.getId());
+        prescription.setDate(LocalDate.now());
+        prescription.setDescription("neutered");
+        prescriptions.add(prescription);
     }
 
     private PetDto getTestPetWithIdAndName(final OwnerDto owner, final int id, final String name) {
         PetTypeDto petType = new PetTypeDto();
         PetDto pet = new PetDto();
-        pet.id(id).name(name).birthDate(LocalDate.now()).type(petType.id(2).name("dog")).addVisitsItem(getTestVisitForPet(pet, 1));
+        pet.id(id).name(name).birthDate(LocalDate.now()).type(petType.id(2).name("dog")).addPrescriptionsItem(getTestPrescriptionForPet(pet, 1));
         return pet;
     }
 
-    private VisitDto getTestVisitForPet(final PetDto pet, final int id) {
-        VisitDto visit = new VisitDto();
-        return visit.id(id).date(LocalDate.now()).description("test" + id);
+    private PrescriptionDto getTestPrescriptionForPet(final PetDto pet, final int id) {
+        PrescriptionDto prescription = new PrescriptionDto();
+        return prescription.id(id).date(LocalDate.now()).description("test" + id);
     }
 
     @Test
@@ -384,16 +384,16 @@ class OwnerRestControllerTests {
 
     @Test
     @WithMockUser(roles = "OWNER_ADMIN")
-    void testCreateVisitSuccess() throws Exception {
-        VisitDto newVisit = visits.get(0);
-        newVisit.setId(999);
+    void testCreatePrescriptionSuccess() throws Exception {
+        PrescriptionDto newPrescription = prescriptions.get(0);
+        newPrescription.setId(999);
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        String newVisitAsJSON = mapper.writeValueAsString(visitMapper.toVisit(newVisit));
-        System.out.println("newVisitAsJSON " + newVisitAsJSON);
-        this.mockMvc.perform(post("/api/owners/1/pets/1/visits")
-                .content(newVisitAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
+        String newPrescriptionAsJSON = mapper.writeValueAsString(prescriptionMapper.toPrescription(newPrescription));
+        System.out.println("newPrescriptionAsJSON " + newPrescriptionAsJSON);
+        this.mockMvc.perform(post("/api/owners/1/pets/1/prescriptions")
+                .content(newPrescriptionAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isCreated());
     }
 

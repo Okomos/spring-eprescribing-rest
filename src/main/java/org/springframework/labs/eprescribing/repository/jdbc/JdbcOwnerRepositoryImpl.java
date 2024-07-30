@@ -26,7 +26,7 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.labs.eprescribing.model.Owner;
 import org.springframework.labs.eprescribing.model.Pet;
 import org.springframework.labs.eprescribing.model.PetType;
-import org.springframework.labs.eprescribing.model.Visit;
+import org.springframework.labs.eprescribing.model.Prescription;
 import org.springframework.labs.eprescribing.repository.OwnerRepository;
 import org.springframework.labs.eprescribing.util.EntityUtils;
 import org.springframework.orm.ObjectRetrievalFailureException;
@@ -73,7 +73,7 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
 
     /**
      * Loads {@link Owner Owners} from the data store by last name, returning all owners whose last name <i>starts</i> with
-     * the given name; also loads the {@link Pet Pets} and {@link Visit Visits} for the corresponding owners, if not
+     * the given name; also loads the {@link Pet Pets} and {@link Prescription Prescriptions} for the corresponding owners, if not
      * already loaded.
      */
     @Override
@@ -85,12 +85,12 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
             params,
             BeanPropertyRowMapper.newInstance(Owner.class)
         );
-        loadOwnersPetsAndVisits(owners);
+        loadOwnersPetsAndPrescriptions(owners);
         return owners;
     }
 
     /**
-     * Loads the {@link Owner} with the supplied <code>id</code>; also loads the {@link Pet Pets} and {@link Visit Visits}
+     * Loads the {@link Owner} with the supplied <code>id</code>; also loads the {@link Pet Pets} and {@link Prescription Prescriptions}
      * for the corresponding owner, if not already loaded.
      */
     @Override
@@ -107,17 +107,17 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
         } catch (EmptyResultDataAccessException ex) {
             throw new ObjectRetrievalFailureException(Owner.class, id);
         }
-        loadPetsAndVisits(owner);
+        loadPetsAndPrescriptions(owner);
         return owner;
     }
 
-    public void loadPetsAndVisits(final Owner owner) {
+    public void loadPetsAndPrescriptions(final Owner owner) {
         Map<String, Object> params = new HashMap<>();
         params.put("id", owner.getId());
         final List<JdbcPet> pets = this.namedParameterJdbcTemplate.query(
-            "SELECT pets.id as pets_id, name, birth_date, type_id, owner_id, visits.id as visit_id, visit_date, description, visits.pet_id as visits_pet_id FROM pets LEFT OUTER JOIN visits ON pets.id = visits.pet_id WHERE owner_id=:id ORDER BY pets.id",
+            "SELECT pets.id as pets_id, name, birth_date, type_id, owner_id, prescriptions.id as prescription_id, prescription_date, description, prescriptions.pet_id as prescriptions_pet_id FROM pets LEFT OUTER JOIN prescriptions ON pets.id = prescriptions.pet_id WHERE owner_id=:id ORDER BY pets.id",
             params,
-            new JdbcPetVisitExtractor()
+            new JdbcPetPrescriptionExtractor()
         );
         Collection<PetType> petTypes = getPetTypes();
         for (JdbcPet pet : pets) {
@@ -147,14 +147,14 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
     }
 
     /**
-     * Loads the {@link Pet} and {@link Visit} data for the supplied {@link List} of {@link Owner Owners}.
+     * Loads the {@link Pet} and {@link Prescription} data for the supplied {@link List} of {@link Owner Owners}.
      *
-     * @param owners the list of owners for whom the pet and visit data should be loaded
-     * @see #loadPetsAndVisits(Owner)
+     * @param owners the list of owners for whom the pet and prescription data should be loaded
+     * @see #loadPetsAndPrescriptions(Owner)
      */
-    private void loadOwnersPetsAndVisits(List<Owner> owners) {
+    private void loadOwnersPetsAndPrescriptions(List<Owner> owners) {
         for (Owner owner : owners) {
-            loadPetsAndVisits(owner);
+            loadPetsAndPrescriptions(owner);
         }
     }
 
@@ -165,7 +165,7 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
 	            new HashMap<String, Object>(),
 	            BeanPropertyRowMapper.newInstance(Owner.class));
 		for (Owner owner : owners) {
-            loadPetsAndVisits(owner);
+            loadPetsAndPrescriptions(owner);
         }
 	    return owners;
 	}
@@ -180,12 +180,12 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
         for (Pet pet : pets){
         	Map<String, Object> pet_params = new HashMap<>();
         	pet_params.put("id", pet.getId());
-        	// cascade delete visits
-        	List<Visit> visits = pet.getVisits();
-            for (Visit visit : visits){
-            	Map<String, Object> visit_params = new HashMap<>();
-            	visit_params.put("id", visit.getId());
-            	this.namedParameterJdbcTemplate.update("DELETE FROM visits WHERE id=:id", visit_params);
+        	// cascade delete prescriptions
+        	List<Prescription> prescriptions = pet.getPrescriptions();
+            for (Prescription prescription : prescriptions){
+            	Map<String, Object> prescription_params = new HashMap<>();
+            	prescription_params.put("id", prescription.getId());
+            	this.namedParameterJdbcTemplate.update("DELETE FROM prescriptions WHERE id=:id", prescription_params);
             }
             this.namedParameterJdbcTemplate.update("DELETE FROM pets WHERE id=:id", pet_params);
         }

@@ -34,10 +34,10 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.labs.eprescribing.model.Owner;
 import org.springframework.labs.eprescribing.model.Pet;
 import org.springframework.labs.eprescribing.model.PetType;
-import org.springframework.labs.eprescribing.model.Visit;
+import org.springframework.labs.eprescribing.model.Prescription;
 import org.springframework.labs.eprescribing.repository.OwnerRepository;
 import org.springframework.labs.eprescribing.repository.PetRepository;
-import org.springframework.labs.eprescribing.repository.VisitRepository;
+import org.springframework.labs.eprescribing.repository.PrescriptionRepository;
 import org.springframework.labs.eprescribing.util.EntityUtils;
 import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.stereotype.Repository;
@@ -61,13 +61,13 @@ public class JdbcPetRepositoryImpl implements PetRepository {
 
     private OwnerRepository ownerRepository;
 
-    private VisitRepository visitRepository;
+    private PrescriptionRepository prescriptionRepository;
 
 
     @Autowired
     public JdbcPetRepositoryImpl(DataSource dataSource,
     		OwnerRepository ownerRepository,
-    		VisitRepository visitRepository) {
+    		PrescriptionRepository prescriptionRepository) {
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 
         this.insertPet = new SimpleJdbcInsert(dataSource)
@@ -75,7 +75,7 @@ public class JdbcPetRepositoryImpl implements PetRepository {
             .usingGeneratedKeyColumns("id");
 
         this.ownerRepository = ownerRepository;
-        this.visitRepository = visitRepository;
+        this.prescriptionRepository = prescriptionRepository;
     }
 
     @Override
@@ -146,7 +146,7 @@ public class JdbcPetRepositoryImpl implements PetRepository {
 		for (JdbcPet jdbcPet : jdbcPets) {
 			jdbcPet.setType(EntityUtils.getById(petTypes, PetType.class, jdbcPet.getTypeId()));
 			jdbcPet.setOwner(EntityUtils.getById(owners, Owner.class, jdbcPet.getOwnerId()));
-			// TODO add visits
+			// TODO add prescriptions
 			pets.add(jdbcPet);
 		}
 		return pets;
@@ -156,12 +156,12 @@ public class JdbcPetRepositoryImpl implements PetRepository {
 	public void delete(Pet pet) throws DataAccessException {
 		Map<String, Object> pet_params = new HashMap<>();
 		pet_params.put("id", pet.getId());
-		List<Visit> visits = pet.getVisits();
-		// cascade delete visits
-		for (Visit visit : visits) {
-			Map<String, Object> visit_params = new HashMap<>();
-			visit_params.put("id", visit.getId());
-			this.namedParameterJdbcTemplate.update("DELETE FROM visits WHERE id=:id", visit_params);
+		List<Prescription> prescriptions = pet.getPrescriptions();
+		// cascade delete prescriptions
+		for (Prescription prescription : prescriptions) {
+			Map<String, Object> prescription_params = new HashMap<>();
+			prescription_params.put("id", prescription.getId());
+			this.namedParameterJdbcTemplate.update("DELETE FROM prescriptions WHERE id=:id", prescription_params);
 		}
 		this.namedParameterJdbcTemplate.update("DELETE FROM pets WHERE id=:id", pet_params);
 	}

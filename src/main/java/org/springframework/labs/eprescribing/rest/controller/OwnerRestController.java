@@ -21,11 +21,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.labs.eprescribing.mapper.OwnerMapper;
 import org.springframework.labs.eprescribing.mapper.PetMapper;
-import org.springframework.labs.eprescribing.mapper.VisitMapper;
+import org.springframework.labs.eprescribing.mapper.PrescriptionMapper;
 import org.springframework.labs.eprescribing.model.Owner;
 import org.springframework.labs.eprescribing.model.Pet;
 import org.springframework.labs.eprescribing.model.PetType;
-import org.springframework.labs.eprescribing.model.Visit;
+import org.springframework.labs.eprescribing.model.Prescription;
 import org.springframework.labs.eprescribing.service.ClinicService;
 import org.springframework.labs.eprescribing.rest.api.OwnersApi;
 import org.springframework.labs.eprescribing.rest.dto.*;
@@ -55,16 +55,16 @@ public class OwnerRestController implements OwnersApi {
 
     private final PetMapper petMapper;
 
-    private final VisitMapper visitMapper;
+    private final PrescriptionMapper prescriptionMapper;
 
     public OwnerRestController(ClinicService clinicService,
                                OwnerMapper ownerMapper,
                                PetMapper petMapper,
-                               VisitMapper visitMapper) {
+                               PrescriptionMapper prescriptionMapper) {
         this.clinicService = clinicService;
         this.ownerMapper = ownerMapper;
         this.petMapper = petMapper;
-        this.visitMapper = visitMapper;
+        this.prescriptionMapper = prescriptionMapper;
     }
 
     @PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
@@ -151,17 +151,17 @@ public class OwnerRestController implements OwnersApi {
 
     @PreAuthorize("hasRole(@roles.OWNER_ADMIN)")
     @Override
-    public ResponseEntity<VisitDto> addVisitToOwner(Integer ownerId, Integer petId, VisitFieldsDto visitFieldsDto) {
+    public ResponseEntity<PrescriptionDto> addPrescriptionToOwner(Integer ownerId, Integer petId, PrescriptionFieldsDto prescriptionFieldsDto) {
         HttpHeaders headers = new HttpHeaders();
-        Visit visit = visitMapper.toVisit(visitFieldsDto);
+        Prescription prescription = prescriptionMapper.toPrescription(prescriptionFieldsDto);
         Pet pet = new Pet();
         pet.setId(petId);
-        visit.setPet(pet);
-        this.clinicService.saveVisit(visit);
-        VisitDto visitDto = visitMapper.toVisitDto(visit);
-        headers.setLocation(UriComponentsBuilder.newInstance().path("/api/visits/{id}")
-            .buildAndExpand(visit.getId()).toUri());
-        return new ResponseEntity<>(visitDto, headers, HttpStatus.CREATED);
+        prescription.setPet(pet);
+        this.clinicService.savePrescription(prescription);
+        PrescriptionDto prescriptionDto = prescriptionMapper.toPrescriptionDto(prescription);
+        headers.setLocation(UriComponentsBuilder.newInstance().path("/api/prescriptions/{id}")
+            .buildAndExpand(prescription.getId()).toUri());
+        return new ResponseEntity<>(prescriptionDto, headers, HttpStatus.CREATED);
     }
 
 

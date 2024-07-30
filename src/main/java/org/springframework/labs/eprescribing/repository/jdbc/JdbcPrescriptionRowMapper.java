@@ -17,7 +17,7 @@ package org.springframework.labs.eprescribing.repository.jdbc;
 
 
 import org.springframework.jdbc.core.RowMapper;
-import org.springframework.labs.eprescribing.model.Visit;
+import org.springframework.labs.eprescribing.model.Prescription;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,16 +26,16 @@ import java.util.Date;
 
 /**
  * {@link RowMapper} implementation mapping data from a {@link ResultSet} to the corresponding properties
- * of the {@link Visit} class.
+ * of the {@link Prescription} class.
  */
-class JdbcVisitRowMapper implements RowMapper<Visit> {
+class JdbcPrescriptionRowMapper implements RowMapper<Prescription> {
 
     @Override
-    public Visit mapRow(ResultSet rs, int row) throws SQLException {
-        Visit visit = new Visit();
-        visit.setId(rs.getInt("visit_id"));
-        visit.setDate(rs.getObject("visit_date", LocalDate.class));
-        visit.setDescription(rs.getString("description"));
-        return visit;
+    public Prescription mapRow(ResultSet rs, int row) throws SQLException {
+        Prescription prescription = new Prescription();
+        prescription.setId(rs.getInt("prescription_id"));
+        prescription.setDate(rs.getObject("prescription_date", LocalDate.class));
+        prescription.setDescription(rs.getString("description"));
+        return prescription;
     }
 }

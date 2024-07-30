@@ -28,13 +28,13 @@ import org.springframework.labs.eprescribing.model.Pet;
 import org.springframework.labs.eprescribing.model.PetType;
 import org.springframework.labs.eprescribing.model.Specialty;
 import org.springframework.labs.eprescribing.model.Vet;
-import org.springframework.labs.eprescribing.model.Visit;
+import org.springframework.labs.eprescribing.model.Prescription;
 import org.springframework.labs.eprescribing.repository.OwnerRepository;
 import org.springframework.labs.eprescribing.repository.PetRepository;
 import org.springframework.labs.eprescribing.repository.PetTypeRepository;
 import org.springframework.labs.eprescribing.repository.SpecialtyRepository;
 import org.springframework.labs.eprescribing.repository.VetRepository;
-import org.springframework.labs.eprescribing.repository.VisitRepository;
+import org.springframework.labs.eprescribing.repository.PrescriptionRepository;
 import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -52,7 +52,7 @@ public class ClinicServiceImpl implements ClinicService {
     private PetRepository petRepository;
     private VetRepository vetRepository;
     private OwnerRepository ownerRepository;
-    private VisitRepository visitRepository;
+    private PrescriptionRepository prescriptionRepository;
     private SpecialtyRepository specialtyRepository;
 	private PetTypeRepository petTypeRepository;
 
@@ -61,13 +61,13 @@ public class ClinicServiceImpl implements ClinicService {
        		 PetRepository petRepository,
     		 VetRepository vetRepository,
     		 OwnerRepository ownerRepository,
-    		 VisitRepository visitRepository,
+    		 PrescriptionRepository prescriptionRepository,
     		 SpecialtyRepository specialtyRepository,
 			 PetTypeRepository petTypeRepository) {
         this.petRepository = petRepository;
         this.vetRepository = vetRepository;
         this.ownerRepository = ownerRepository;
-        this.visitRepository = visitRepository;
+        this.prescriptionRepository = prescriptionRepository;
         this.specialtyRepository = specialtyRepository;
 		this.petTypeRepository = petTypeRepository;
     }
@@ -86,27 +86,27 @@ public class ClinicServiceImpl implements ClinicService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Visit findVisitById(int visitId) throws DataAccessException {
-		Visit visit = null;
+	public Prescription findPrescriptionById(int prescriptionId) throws DataAccessException {
+		Prescription prescription = null;
 		try {
-			visit = visitRepository.findById(visitId);
+			prescription = prescriptionRepository.findById(prescriptionId);
 		} catch (ObjectRetrievalFailureException|EmptyResultDataAccessException e) {
 		// just ignore not found exceptions for Jdbc/Jpa realization
 			return null;
 		}
-		return visit;
+		return prescription;
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Collection<Visit> findAllVisits() throws DataAccessException {
-		return visitRepository.findAll();
+	public Collection<Prescription> findAllPrescriptions() throws DataAccessException {
+		return prescriptionRepository.findAll();
 	}
 
 	@Override
 	@Transactional
-	public void deleteVisit(Visit visit) throws DataAccessException {
-		visitRepository.delete(visit);
+	public void deletePrescription(Prescription prescription) throws DataAccessException {
+		prescriptionRepository.delete(prescription);
 	}
 
 	@Override
@@ -254,8 +254,8 @@ public class ClinicServiceImpl implements ClinicService {
 
 	@Override
 	@Transactional
-	public void saveVisit(Visit visit) throws DataAccessException {
-		visitRepository.save(visit);
+	public void savePrescription(Prescription prescription) throws DataAccessException {
+		prescriptionRepository.save(prescription);
 
 	}
 
@@ -280,8 +280,8 @@ public class ClinicServiceImpl implements ClinicService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Collection<Visit> findVisitsByPetId(int petId) {
-		return visitRepository.findByPetId(petId);
+	public Collection<Prescription> findPrescriptionsByPetId(int petId) {
+		return prescriptionRepository.findByPetId(petId);
 	}
 
     @Override

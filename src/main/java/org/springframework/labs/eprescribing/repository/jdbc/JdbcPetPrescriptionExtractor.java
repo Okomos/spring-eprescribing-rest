@@ -17,7 +17,7 @@ package org.springframework.labs.eprescribing.repository.jdbc;
 
 import org.springframework.data.jdbc.core.OneToManyResultSetExtractor;
 import org.springframework.jdbc.core.ResultSetExtractor;
-import org.springframework.labs.eprescribing.model.Visit;
+import org.springframework.labs.eprescribing.model.Prescription;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,11 +26,11 @@ import java.sql.SQLException;
  * {@link ResultSetExtractor} implementation by using the
  * {@link OneToManyResultSetExtractor} of Spring Data Core JDBC Extensions.
  */
-public class JdbcPetVisitExtractor extends
-    OneToManyResultSetExtractor<JdbcPet, Visit, Integer> {
+public class JdbcPetPrescriptionExtractor extends
+    OneToManyResultSetExtractor<JdbcPet, Prescription, Integer> {
 
-    public JdbcPetVisitExtractor() {
-        super(new JdbcPetRowMapper(), new JdbcVisitRowMapper());
+    public JdbcPetPrescriptionExtractor() {
+        super(new JdbcPetRowMapper(), new JdbcPrescriptionRowMapper());
     }
 
     @Override
@@ -40,15 +40,15 @@ public class JdbcPetVisitExtractor extends
 
     @Override
     protected Integer mapForeignKey(ResultSet rs) throws SQLException {
-        if (rs.getObject("visits_pet_id") == null) {
+        if (rs.getObject("prescriptions_pet_id") == null) {
             return null;
         } else {
-            return rs.getInt("visits_pet_id");
+            return rs.getInt("prescriptions_pet_id");
         }
     }
 
     @Override
-    protected void addChild(JdbcPet root, Visit child) {
-        root.addVisit(child);
+    protected void addChild(JdbcPet root, Prescription child) {
+        root.addPrescription(child);
     }
 }

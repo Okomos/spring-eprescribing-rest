@@ -17,16 +17,16 @@ package org.springframework.labs.eprescribing.repository.springdatajpa;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.repository.Repository;
-import org.springframework.labs.eprescribing.model.Visit;
-import org.springframework.labs.eprescribing.repository.VisitRepository;
+import org.springframework.labs.eprescribing.model.Prescription;
+import org.springframework.labs.eprescribing.repository.PrescriptionRepository;
 
 /**
- * Spring Data JPA specialization of the {@link VisitRepository} interface
+ * Spring Data JPA specialization of the {@link PrescriptionRepository} interface
  *
  * @author Michael Isvy
  * @author Vitaliy Fedoriv
  */
 
 @Profile("spring-data-jpa")
-public interface SpringDataVisitRepository extends VisitRepository, Repository<Visit, Integer>, VisitRepositoryOverride {
+public interface SpringDataPrescriptionRepository extends PrescriptionRepository, Repository<Prescription, Integer>, PrescriptionRepositoryOverride {
 }

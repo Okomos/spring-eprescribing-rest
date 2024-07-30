@@ -24,8 +24,8 @@ import jakarta.persistence.Query;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.dao.DataAccessException;
-import org.springframework.labs.eprescribing.model.Visit;
-import org.springframework.labs.eprescribing.repository.VisitRepository;
+import org.springframework.labs.eprescribing.model.Prescription;
+import org.springframework.labs.eprescribing.repository.PrescriptionRepository;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -41,44 +41,44 @@ import org.springframework.stereotype.Repository;
  */
 @Repository
 @Profile("jpa")
-public class JpaVisitRepositoryImpl implements VisitRepository {
+public class JpaPrescriptionRepositoryImpl implements PrescriptionRepository {
 
     @PersistenceContext
     private EntityManager em;
 
 
     @Override
-    public void save(Visit visit) {
-        if (visit.getId() == null) {
-            this.em.persist(visit);
+    public void save(Prescription prescription) {
+        if (prescription.getId() == null) {
+            this.em.persist(prescription);
         } else {
-            this.em.merge(visit);
+            this.em.merge(prescription);
         }
     }
 
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Visit> findByPetId(Integer petId) {
-        Query query = this.em.createQuery("SELECT v FROM Visit v where v.pet.id= :id");
+    public List<Prescription> findByPetId(Integer petId) {
+        Query query = this.em.createQuery("SELECT v FROM Prescription v where v.pet.id= :id");
         query.setParameter("id", petId);
         return query.getResultList();
     }
 
 	@Override
-	public Visit findById(int id) throws DataAccessException {
-		return this.em.find(Visit.class, id);
+	public Prescription findById(int id) throws DataAccessException {
+		return this.em.find(Prescription.class, id);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<Visit> findAll() throws DataAccessException {
-        return this.em.createQuery("SELECT v FROM Visit v").getResultList();
+	public Collection<Prescription> findAll() throws DataAccessException {
+        return this.em.createQuery("SELECT v FROM Prescription v").getResultList();
 	}
 
 	@Override
-	public void delete(Visit visit) throws DataAccessException {
-        this.em.remove(this.em.contains(visit) ? visit : this.em.merge(visit));
+	public void delete(Prescription prescription) throws DataAccessException {
+        this.em.remove(this.em.contains(prescription) ? prescription : this.em.merge(prescription));
 	}
 
 }

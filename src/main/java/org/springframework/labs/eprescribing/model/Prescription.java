@@ -15,25 +15,23 @@
  */
 package org.springframework.labs.eprescribing.model;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 
 /**
- * Simple JavaBean domain object representing a visit.
+ * Simple JavaBean domain object representing a prescription.
  *
  * @author Ken Krebs
  */
 @Entity
-@Table(name = "visits")
-public class Visit extends BaseEntity {
+@Table(name = "prescriptions")
+public class Prescription extends BaseEntity {
 
     /**
      * Holds value of property date.
      */
-    @Column(name = "visit_date", columnDefinition = "DATE")
+    @Column(name = "prescription_date", columnDefinition = "DATE")
     private LocalDate date;
 
     /**
@@ -52,9 +50,9 @@ public class Visit extends BaseEntity {
 
 
     /**
-     * Creates a new instance of Visit for the current date
+     * Creates a new instance of Prescription for the current date
      */
-    public Visit() {
+    public Prescription() {
         this.date = LocalDate.now();
     }
 

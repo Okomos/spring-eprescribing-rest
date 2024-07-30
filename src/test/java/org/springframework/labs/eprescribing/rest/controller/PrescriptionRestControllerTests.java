@@ -25,13 +25,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
-import org.springframework.labs.eprescribing.mapper.VisitMapper;
+import org.springframework.labs.eprescribing.mapper.PrescriptionMapper;
 import org.springframework.labs.eprescribing.model.Owner;
 import org.springframework.labs.eprescribing.model.Pet;
 import org.springframework.labs.eprescribing.model.PetType;
-import org.springframework.labs.eprescribing.model.Visit;
+import org.springframework.labs.eprescribing.model.Prescription;
 import org.springframework.labs.eprescribing.rest.advice.ExceptionControllerAdvice;
-import org.springframework.labs.eprescribing.rest.controller.VisitRestController;
+import org.springframework.labs.eprescribing.rest.controller.PrescriptionRestController;
 import org.springframework.labs.eprescribing.service.ClinicService;
 import org.springframework.labs.eprescribing.service.clinicService.ApplicationTestConfig;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -49,35 +49,35 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 /**
- * Test class for {@link VisitRestController}
+ * Test class for {@link PrescriptionRestController}
  *
  * @author Vitaliy Fedoriv
  */
 @SpringBootTest
 @ContextConfiguration(classes=ApplicationTestConfig.class)
 @WebAppConfiguration
-class VisitRestControllerTests {
+class PrescriptionRestControllerTests {
 
     @Autowired
-    private VisitRestController visitRestController;
+    private PrescriptionRestController prescriptionRestController;
 
     @MockBean
     private ClinicService clinicService;
 
     @Autowired
-    private VisitMapper visitMapper;
+    private PrescriptionMapper prescriptionMapper;
 
     private MockMvc mockMvc;
 
-    private List<Visit> visits;
+    private List<Prescription> prescriptions;
 
     @BeforeEach
-    void initVisits(){
-    	this.mockMvc = MockMvcBuilders.standaloneSetup(visitRestController)
+    void initPrescriptions(){
+    	this.mockMvc = MockMvcBuilders.standaloneSetup(prescriptionRestController)
     			.setControllerAdvice(new ExceptionControllerAdvice())
     			.build();
 
-        visits = new ArrayList<>();
+        prescriptions = new ArrayList<>();
 
     	Owner owner = new Owner();
     	owner.setId(1);
@@ -99,28 +99,28 @@ class VisitRestControllerTests {
     	pet.setType(petType);
 
 
-    	Visit visit = new Visit();
-    	visit.setId(2);
-    	visit.setPet(pet);
-        visit.setDate(LocalDate.now());
-    	visit.setDescription("rabies shot");
-    	visits.add(visit);
+    	Prescription prescription = new Prescription();
+    	prescription.setId(2);
+    	prescription.setPet(pet);
+        prescription.setDate(LocalDate.now());
+    	prescription.setDescription("rabies shot");
+    	prescriptions.add(prescription);
 
-    	visit = new Visit();
-    	visit.setId(3);
-    	visit.setPet(pet);
-        visit.setDate(LocalDate.now());
-    	visit.setDescription("neutered");
-    	visits.add(visit);
+    	prescription = new Prescription();
+    	prescription.setId(3);
+    	prescription.setPet(pet);
+        prescription.setDate(LocalDate.now());
+    	prescription.setDescription("neutered");
+    	prescriptions.add(prescription);
 
 
     }
 
     @Test
     @WithMockUser(roles="OWNER_ADMIN")
-    void testGetVisitSuccess() throws Exception {
-    	given(this.clinicService.findVisitById(2)).willReturn(visits.get(0));
-        this.mockMvc.perform(get("/api/visits/2")
+    void testGetPrescriptionSuccess() throws Exception {
+    	given(this.clinicService.findPrescriptionById(2)).willReturn(prescriptions.get(0));
+        this.mockMvc.perform(get("/api/prescriptions/2")
         	.accept(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
             .andExpect(content().contentType("application/json"))
@@ -130,18 +130,18 @@ class VisitRestControllerTests {
 
     @Test
     @WithMockUser(roles="OWNER_ADMIN")
-    void testGetVisitNotFound() throws Exception {
-        given(this.clinicService.findVisitById(999)).willReturn(null);
-        this.mockMvc.perform(get("/api/visits/999")
+    void testGetPrescriptionNotFound() throws Exception {
+        given(this.clinicService.findPrescriptionById(999)).willReturn(null);
+        this.mockMvc.perform(get("/api/prescriptions/999")
         	.accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
     }
 
     @Test
     @WithMockUser(roles="OWNER_ADMIN")
-    void testGetAllVisitsSuccess() throws Exception {
-    	given(this.clinicService.findAllVisits()).willReturn(visits);
-        this.mockMvc.perform(get("/api/visits/")
+    void testGetAllPrescriptionsSuccess() throws Exception {
+    	given(this.clinicService.findAllPrescriptions()).willReturn(prescriptions);
+        this.mockMvc.perform(get("/api/prescriptions/")
         	.accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType("application/json"))
@@ -153,59 +153,59 @@ class VisitRestControllerTests {
 
     @Test
     @WithMockUser(roles="OWNER_ADMIN")
-    void testGetAllVisitsNotFound() throws Exception {
-    	visits.clear();
-    	given(this.clinicService.findAllVisits()).willReturn(visits);
-        this.mockMvc.perform(get("/api/visits/")
+    void testGetAllPrescriptionsNotFound() throws Exception {
+    	prescriptions.clear();
+    	given(this.clinicService.findAllPrescriptions()).willReturn(prescriptions);
+        this.mockMvc.perform(get("/api/prescriptions/")
         	.accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
     }
 
     @Test
     @WithMockUser(roles="OWNER_ADMIN")
-    void testCreateVisitSuccess() throws Exception {
-    	Visit newVisit = visits.get(0);
-    	newVisit.setId(999);
+    void testCreatePrescriptionSuccess() throws Exception {
+    	Prescription newPrescription = prescriptions.get(0);
+    	newPrescription.setId(999);
     	ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        String newVisitAsJSON = mapper.writeValueAsString(visitMapper.toVisitDto(newVisit));
-    	System.out.println("newVisitAsJSON " + newVisitAsJSON);
-    	this.mockMvc.perform(post("/api/visits/")
-    		.content(newVisitAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
+        String newPrescriptionAsJSON = mapper.writeValueAsString(prescriptionMapper.toPrescriptionDto(newPrescription));
+    	System.out.println("newPrescriptionAsJSON " + newPrescriptionAsJSON);
+    	this.mockMvc.perform(post("/api/prescriptions/")
+    		.content(newPrescriptionAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
     		.andExpect(status().isCreated());
     }
 
     @Test
     @WithMockUser(roles="OWNER_ADMIN")
-    void testCreateVisitError() throws Exception {
-    	Visit newVisit = visits.get(0);
-    	newVisit.setId(null);
-        newVisit.setDescription(null);
+    void testCreatePrescriptionError() throws Exception {
+    	Prescription newPrescription = prescriptions.get(0);
+    	newPrescription.setId(null);
+        newPrescription.setDescription(null);
     	ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
-        String newVisitAsJSON = mapper.writeValueAsString(visitMapper.toVisitDto(newVisit));
-    	this.mockMvc.perform(post("/api/visits/")
-        		.content(newVisitAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
+        String newPrescriptionAsJSON = mapper.writeValueAsString(prescriptionMapper.toPrescriptionDto(newPrescription));
+    	this.mockMvc.perform(post("/api/prescriptions/")
+        		.content(newPrescriptionAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
         		.andExpect(status().isBadRequest());
      }
 
     @Test
     @WithMockUser(roles="OWNER_ADMIN")
-    void testUpdateVisitSuccess() throws Exception {
-    	given(this.clinicService.findVisitById(2)).willReturn(visits.get(0));
-    	Visit newVisit = visits.get(0);
-    	newVisit.setDescription("rabies shot test");
+    void testUpdatePrescriptionSuccess() throws Exception {
+    	given(this.clinicService.findPrescriptionById(2)).willReturn(prescriptions.get(0));
+    	Prescription newPrescription = prescriptions.get(0);
+    	newPrescription.setDescription("rabies shot test");
     	ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        String newVisitAsJSON = mapper.writeValueAsString(visitMapper.toVisitDto(newVisit));
-    	this.mockMvc.perform(put("/api/visits/2")
-    		.content(newVisitAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
+        String newPrescriptionAsJSON = mapper.writeValueAsString(prescriptionMapper.toPrescriptionDto(newPrescription));
+    	this.mockMvc.perform(put("/api/prescriptions/2")
+    		.content(newPrescriptionAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
         	.andExpect(content().contentType("application/json"))
         	.andExpect(status().isNoContent());
 
-    	this.mockMvc.perform(get("/api/visits/2")
+    	this.mockMvc.perform(get("/api/prescriptions/2")
            	.accept(MediaType.APPLICATION_JSON).contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isOk())
             .andExpect(content().contentType("application/json"))
@@ -215,40 +215,40 @@ class VisitRestControllerTests {
 
     @Test
     @WithMockUser(roles="OWNER_ADMIN")
-    void testUpdateVisitError() throws Exception {
-    	Visit newVisit = visits.get(0);
-        newVisit.setDescription(null);
+    void testUpdatePrescriptionError() throws Exception {
+    	Prescription newPrescription = prescriptions.get(0);
+        newPrescription.setDescription(null);
     	ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
-        String newVisitAsJSON = mapper.writeValueAsString(visitMapper.toVisitDto(newVisit));
-    	this.mockMvc.perform(put("/api/visits/2")
-    		.content(newVisitAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
+        String newPrescriptionAsJSON = mapper.writeValueAsString(prescriptionMapper.toPrescriptionDto(newPrescription));
+    	this.mockMvc.perform(put("/api/prescriptions/2")
+    		.content(newPrescriptionAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
         	.andExpect(status().isBadRequest());
      }
 
     @Test
     @WithMockUser(roles="OWNER_ADMIN")
-    void testDeleteVisitSuccess() throws Exception {
-    	Visit newVisit = visits.get(0);
+    void testDeletePrescriptionSuccess() throws Exception {
+    	Prescription newPrescription = prescriptions.get(0);
     	ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
-        String newVisitAsJSON = mapper.writeValueAsString(visitMapper.toVisitDto(newVisit));
-    	given(this.clinicService.findVisitById(2)).willReturn(visits.get(0));
-    	this.mockMvc.perform(delete("/api/visits/2")
-    		.content(newVisitAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
+        String newPrescriptionAsJSON = mapper.writeValueAsString(prescriptionMapper.toPrescriptionDto(newPrescription));
+    	given(this.clinicService.findPrescriptionById(2)).willReturn(prescriptions.get(0));
+    	this.mockMvc.perform(delete("/api/prescriptions/2")
+    		.content(newPrescriptionAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
         	.andExpect(status().isNoContent());
     }
 
     @Test
     @WithMockUser(roles="OWNER_ADMIN")
-    void testDeleteVisitError() throws Exception {
-    	Visit newVisit = visits.get(0);
+    void testDeletePrescriptionError() throws Exception {
+    	Prescription newPrescription = prescriptions.get(0);
     	ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
-        String newVisitAsJSON = mapper.writeValueAsString(visitMapper.toVisitDto(newVisit));
-        given(this.clinicService.findVisitById(999)).willReturn(null);
-        this.mockMvc.perform(delete("/api/visits/999")
-    		.content(newVisitAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
+        String newPrescriptionAsJSON = mapper.writeValueAsString(prescriptionMapper.toPrescriptionDto(newPrescription));
+        given(this.clinicService.findPrescriptionById(999)).willReturn(null);
+        this.mockMvc.perform(delete("/api/prescriptions/999")
+    		.content(newPrescriptionAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
         	.andExpect(status().isNotFound());
     }
 

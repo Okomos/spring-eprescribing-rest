@@ -26,8 +26,8 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.labs.eprescribing.model.Owner;
 import org.springframework.labs.eprescribing.model.PetType;
-import org.springframework.labs.eprescribing.model.Visit;
-import org.springframework.labs.eprescribing.repository.VisitRepository;
+import org.springframework.labs.eprescribing.model.Prescription;
+import org.springframework.labs.eprescribing.repository.PrescriptionRepository;
 import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.stereotype.Repository;
 
@@ -37,7 +37,7 @@ import java.sql.SQLException;
 import java.util.*;
 
 /**
- * A simple JDBC-based implementation of the {@link VisitRepository} interface.
+ * A simple JDBC-based implementation of the {@link PrescriptionRepository} interface.
  *
  * @author Ken Krebs
  * @author Juergen Hoeller
@@ -50,34 +50,34 @@ import java.util.*;
  */
 @Repository
 @Profile("jdbc")
-public class JdbcVisitRepositoryImpl implements VisitRepository {
+public class JdbcPrescriptionRepositoryImpl implements PrescriptionRepository {
 
-    protected SimpleJdbcInsert insertVisit;
+    protected SimpleJdbcInsert insertPrescription;
     private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     @Autowired
-    public JdbcVisitRepositoryImpl(DataSource dataSource) {
+    public JdbcPrescriptionRepositoryImpl(DataSource dataSource) {
         this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 
-        this.insertVisit = new SimpleJdbcInsert(dataSource)
-            .withTableName("visits")
+        this.insertPrescription = new SimpleJdbcInsert(dataSource)
+            .withTableName("prescriptions")
             .usingGeneratedKeyColumns("id");
     }
 
 
     /**
-     * Creates a {@link MapSqlParameterSource} based on data values from the supplied {@link Visit} instance.
+     * Creates a {@link MapSqlParameterSource} based on data values from the supplied {@link Prescription} instance.
      */
-    protected MapSqlParameterSource createVisitParameterSource(Visit visit) {
+    protected MapSqlParameterSource createPrescriptionParameterSource(Prescription prescription) {
         return new MapSqlParameterSource()
-            .addValue("id", visit.getId())
-            .addValue("visit_date", visit.getDate())
-            .addValue("description", visit.getDescription())
-            .addValue("pet_id", visit.getPet().getId());
+            .addValue("id", prescription.getId())
+            .addValue("prescription_date", prescription.getDate())
+            .addValue("description", prescription.getDescription())
+            .addValue("pet_id", prescription.getPet().getId());
     }
 
     @Override
-    public List<Visit> findByPetId(Integer petId) {
+    public List<Prescription> findByPetId(Integer petId) {
         Map<String, Object> params = new HashMap<>();
         params.put("id", petId);
         JdbcPet pet = this.namedParameterJdbcTemplate.queryForObject(
@@ -85,92 +85,92 @@ public class JdbcVisitRepositoryImpl implements VisitRepository {
             params,
             new JdbcPetRowMapper());
 
-        List<Visit> visits = this.namedParameterJdbcTemplate.query(
-            "SELECT id as visit_id, visit_date, description FROM visits WHERE pet_id=:id",
-            params, new JdbcVisitRowMapper());
+        List<Prescription> prescriptions = this.namedParameterJdbcTemplate.query(
+            "SELECT id as prescription_id, prescription_date, description FROM prescriptions WHERE pet_id=:id",
+            params, new JdbcPrescriptionRowMapper());
 
-        for (Visit visit : visits) {
-            visit.setPet(pet);
+        for (Prescription prescription : prescriptions) {
+            prescription.setPet(pet);
         }
 
-        return visits;
+        return prescriptions;
     }
 
     @Override
-    public Visit findById(int id) throws DataAccessException {
-        Visit visit;
+    public Prescription findById(int id) throws DataAccessException {
+        Prescription prescription;
         try {
             Map<String, Object> params = new HashMap<>();
             params.put("id", id);
-            visit = this.namedParameterJdbcTemplate.queryForObject(
-                "SELECT id as visit_id, visits.pet_id as pets_id, visit_date, description FROM visits WHERE id= :id",
+            prescription = this.namedParameterJdbcTemplate.queryForObject(
+                "SELECT id as prescription_id, prescriptions.pet_id as pets_id, prescription_date, description FROM prescriptions WHERE id= :id",
                 params,
-                new JdbcVisitRowMapperExt());
+                new JdbcPrescriptionRowMapperExt());
         } catch (EmptyResultDataAccessException ex) {
-            throw new ObjectRetrievalFailureException(Visit.class, id);
+            throw new ObjectRetrievalFailureException(Prescription.class, id);
         }
-        return visit;
+        return prescription;
     }
 
     @Override
-    public Collection<Visit> findAll() throws DataAccessException {
+    public Collection<Prescription> findAll() throws DataAccessException {
         Map<String, Object> params = new HashMap<>();
         return this.namedParameterJdbcTemplate.query(
-            "SELECT id as visit_id, pets.id as pets_id, visit_date, description FROM visits LEFT JOIN pets ON visits.pet_id = pets.id",
-            params, new JdbcVisitRowMapperExt());
+            "SELECT id as prescription_id, pets.id as pets_id, prescription_date, description FROM prescriptions LEFT JOIN pets ON prescriptions.pet_id = pets.id",
+            params, new JdbcPrescriptionRowMapperExt());
     }
 
     @Override
-    public void save(Visit visit) throws DataAccessException {
-        if (visit.isNew()) {
-            Number newKey = this.insertVisit.executeAndReturnKey(createVisitParameterSource(visit));
-            visit.setId(newKey.intValue());
+    public void save(Prescription prescription) throws DataAccessException {
+        if (prescription.isNew()) {
+            Number newKey = this.insertPrescription.executeAndReturnKey(createPrescriptionParameterSource(prescription));
+            prescription.setId(newKey.intValue());
         } else {
             this.namedParameterJdbcTemplate.update(
-                "UPDATE visits SET visit_date=:visit_date, description=:description, pet_id=:pet_id WHERE id=:id ",
-                createVisitParameterSource(visit));
+                "UPDATE prescriptions SET prescription_date=:prescription_date, description=:description, pet_id=:pet_id WHERE id=:id ",
+                createPrescriptionParameterSource(prescription));
         }
     }
 
     @Override
-    public void delete(Visit visit) throws DataAccessException {
+    public void delete(Prescription prescription) throws DataAccessException {
         Map<String, Object> params = new HashMap<>();
-        params.put("id", visit.getId());
-        this.namedParameterJdbcTemplate.update("DELETE FROM visits WHERE id=:id", params);
+        params.put("id", prescription.getId());
+        this.namedParameterJdbcTemplate.update("DELETE FROM prescriptions WHERE id=:id", params);
     }
 
-    protected class JdbcVisitRowMapperExt implements RowMapper<Visit> {
+    protected class JdbcPrescriptionRowMapperExt implements RowMapper<Prescription> {
 
         @Override
-        public Visit mapRow(ResultSet rs, int rowNum) throws SQLException {
-            Visit visit = new Visit();
+        public Prescription mapRow(ResultSet rs, int rowNum) throws SQLException {
+            Prescription prescription = new Prescription();
             JdbcPet pet = new JdbcPet();
             PetType petType = new PetType();
             Owner owner = new Owner();
-            visit.setId(rs.getInt("visit_id"));
-            Date visitDate = rs.getDate("visit_date");
-            visit.setDate(new java.sql.Date(visitDate.getTime()).toLocalDate());
-            visit.setDescription(rs.getString("description"));
+            prescription.setId(rs.getInt("prescription_id"));
+            Date prescriptionDate = rs.getDate("prescription_date");
+            prescription.setDate(new java.sql.Date(prescriptionDate.getTime()).toLocalDate());
+            prescription.setDescription(rs.getString("description"));
             Map<String, Object> params = new HashMap<>();
             params.put("id", rs.getInt("pets_id"));
-            pet = JdbcVisitRepositoryImpl.this.namedParameterJdbcTemplate.queryForObject(
+            pet = JdbcPrescriptionRepositoryImpl.this.namedParameterJdbcTemplate.queryForObject(
                 "SELECT pets.id as pets_id, name, birth_date, type_id, owner_id FROM pets WHERE pets.id=:id",
                 params,
                 new JdbcPetRowMapper());
             params.put("type_id", pet.getTypeId());
-            petType = JdbcVisitRepositoryImpl.this.namedParameterJdbcTemplate.queryForObject(
+            petType = JdbcPrescriptionRepositoryImpl.this.namedParameterJdbcTemplate.queryForObject(
                 "SELECT id, name FROM types WHERE id= :type_id",
                 params,
                 BeanPropertyRowMapper.newInstance(PetType.class));
             pet.setType(petType);
             params.put("owner_id", pet.getOwnerId());
-            owner = JdbcVisitRepositoryImpl.this.namedParameterJdbcTemplate.queryForObject(
+            owner = JdbcPrescriptionRepositoryImpl.this.namedParameterJdbcTemplate.queryForObject(
                 "SELECT id, first_name, last_name, address, city, telephone FROM owners WHERE id= :owner_id",
                 params,
                 BeanPropertyRowMapper.newInstance(Owner.class));
             pet.setOwner(owner);
-            visit.setPet(pet);
-            return visit;
+            prescription.setPet(pet);
+            return prescription;
         }
     }
 

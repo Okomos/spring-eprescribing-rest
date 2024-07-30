@@ -19,8 +19,8 @@ tags:
     description: Endpoints related to pets.
   - name: vet
     description: Endpoints related to vets.
-  - name: visit
-    description: Endpoints related to vet visits.
+  - name: prescription
+    description: Endpoints related to vet prescriptions.
   - name: pettypes
     description: Endpoints related to pet types.
   - name: specialty
@@ -454,13 +454,13 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RestError'
-  /owners/{ownerId}/pets/{petId}/visits:
+  /owners/{ownerId}/pets/{petId}/prescriptions:
     post:
       tags:
-        - visit
-      operationId: addVisitToOwner
-      summary: Adds a vet visit
-      description: Records the details of a new vet visit.
+        - prescription
+      operationId: addPrescriptionToOwner
+      summary: Adds a vet prescription
+      description: Records the details of a new vet prescription.
       parameters:
         - name: ownerId
           in: path
@@ -481,19 +481,19 @@ paths:
             minimum: 0
             example: 1
       requestBody:
-        description: The details of the new vet visit.
+        description: The details of the new vet prescription.
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/VisitFields'
+              $ref: '#/components/schemas/PrescriptionFields'
         required: true
       responses:
         201:
-          description: The vet visit was sucessfully added.
+          description: The vet prescription was sucessfully added.
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Visit'
+                $ref: '#/components/schemas/Prescription'
         400:
           description: Bad request.
           content:
@@ -1015,16 +1015,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RestError'
-  /visits:
+  /prescriptions:
     get:
       tags:
-        - visit
-      operationId: listVisits
-      summary: Lists visits
-      description: Returns an array of visit .
+        - prescription
+      operationId: listPrescriptions
+      summary: Lists prescriptions
+      description: Returns an array of prescription .
       responses:
         200:
-          description: visits found and returned.
+          description: prescriptions found and returned.
           headers:
             ETag:
               description: An ID for this version of the response.
@@ -1035,7 +1035,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Visit'
+                  $ref: '#/components/schemas/Prescription'
         304:
           description: Not modified.
           headers:
@@ -1051,20 +1051,20 @@ paths:
                 $ref: '#/components/schemas/RestError'
     post:
       tags:
-        - visit
-      operationId: addVisit
-      summary: Create a visit
-      description: Creates a visit.
+        - prescription
+      operationId: addPrescription
+      summary: Create a prescription
+      description: Creates a prescription.
       requestBody:
-        description: The visit
+        description: The prescription
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Visit'
+              $ref: '#/components/schemas/Prescription'
         required: true
       responses:
         200:
-          description: visit created successfully.
+          description: prescription created successfully.
           headers:
             ETag:
               description: An ID for this version of the response.
@@ -1073,7 +1073,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Visit'
+                $ref: '#/components/schemas/Prescription'
         304:
           description: Not modified.
           headers:
@@ -1088,7 +1088,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/RestError'
         404:
-          description: Visit not found.
+          description: Prescription not found.
           content:
             application/json:
               schema:
@@ -1099,17 +1099,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RestError'
-  /visits/{visitId}:
+  /prescriptions/{prescriptionId}:
     get:
       tags:
-        - visit
-      operationId: getVisit
-      summary: Get a visit by ID
-      description: Returns the visit or a 404 error.
+        - prescription
+      operationId: getPrescription
+      summary: Get a prescription by ID
+      description: Returns the prescription or a 404 error.
       parameters:
-        - name: visitId
+        - name: prescriptionId
           in: path
-          description: The ID of the visit.
+          description: The ID of the prescription.
           required: true
           schema:
             type: integer
@@ -1118,7 +1118,7 @@ paths:
             example: 1
       responses:
         200:
-          description: Visit details found and returned.
+          description: Prescription details found and returned.
           headers:
             ETag:
               description: An ID for this version of the response.
@@ -1127,7 +1127,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Visit'
+                $ref: '#/components/schemas/Prescription'
         304:
           description: Not modified.
           headers:
@@ -1142,7 +1142,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/RestError'
         404:
-          description: Visit not found.
+          description: Prescription not found.
           content:
             application/json:
               schema:
@@ -1155,14 +1155,14 @@ paths:
                 $ref: '#/components/schemas/RestError'
     put:
       tags:
-        - visit
-      operationId: updateVisit
-      summary: Update a visit by ID
-      description: Returns the visit or a 404 error.
+        - prescription
+      operationId: updatePrescription
+      summary: Update a prescription by ID
+      description: Returns the prescription or a 404 error.
       parameters:
-        - name: visitId
+        - name: prescriptionId
           in: path
-          description: The ID of the visit.
+          description: The ID of the prescription.
           required: true
           schema:
             type: integer
@@ -1170,15 +1170,15 @@ paths:
             minimum: 0
             example: 1
       requestBody:
-        description: The visit
+        description: The prescription
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Visit'
+              $ref: '#/components/schemas/Prescription'
         required: true
       responses:
         200:
-          description: Visit details found and returned.
+          description: Prescription details found and returned.
           headers:
             ETag:
               description: An ID for this version of the response.
@@ -1187,7 +1187,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Visit'
+                $ref: '#/components/schemas/Prescription'
         304:
           description: Not modified.
           headers:
@@ -1202,7 +1202,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/RestError'
         404:
-          description: Visit not found.
+          description: Prescription not found.
           content:
             application/json:
               schema:
@@ -1215,14 +1215,14 @@ paths:
                 $ref: '#/components/schemas/RestError'
     delete:
       tags:
-        - visit
-      operationId: deleteVisit
-      summary: Delete a visit by ID
-      description: Returns the visit or a 404 error.
+        - prescription
+      operationId: deletePrescription
+      summary: Delete a prescription by ID
+      description: Returns the prescription or a 404 error.
       parameters:
-        - name: visitId
+        - name: prescriptionId
           in: path
-          description: The ID of the visit.
+          description: The ID of the prescription.
           required: true
           schema:
             type: integer
@@ -1231,7 +1231,7 @@ paths:
             example: 1
       responses:
         200:
-          description: Visit details found and returned.
+          description: Prescription details found and returned.
           headers:
             ETag:
               description: An ID for this version of the response.
@@ -1240,7 +1240,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Visit'
+                $ref: '#/components/schemas/Prescription'
         304:
           description: Not modified.
           headers:
@@ -1255,7 +1255,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/RestError'
         404:
-          description: Visit not found.
+          description: Prescription not found.
           content:
             application/json:
               schema:
@@ -1982,7 +1982,7 @@ components:
               readOnly: true
             pets:
               title: Pets
-              description: The pets owned by this individual including any booked vet visits.
+              description: The pets owned by this individual including any booked vet prescriptions.
               type: array
               items:
                 $ref: '#/components/schemas/Pet'
@@ -2035,17 +2035,17 @@ components:
               minimum: 0
               example: 1
               readOnly: true
-            visits:
-              title: Visits
-              description: Vet visit bookings for this pet.
+            prescriptions:
+              title: Prescriptions
+              description: Vet prescription bookings for this pet.
               type: array
               items:
-                $ref: '#/components/schemas/Visit'
+                $ref: '#/components/schemas/Prescription'
               readOnly: true
           required:
             - id
             - type
-            - visits
+            - prescriptions
     VetFields:
       title: VetFields
       description: Editable fields of a veterinarian.
@@ -2097,36 +2097,36 @@ components:
         - firstName
         - lastName
         - specialties
-    VisitFields:
-      title: Visit fields
-      description: Editable fields of a vet visit.
+    PrescriptionFields:
+      title: Prescription fields
+      description: Editable fields of a vet prescription.
       type: object
       properties:
         date:
           title: Date
-          description: The date of the visit.
+          description: The date of the prescription.
           type: string
           format: date
           example: '2013-01-01'
         description:
           title: Description
-          description: The description for the visit.
+          description: The description for the prescription.
           type: string
           minLength: 1
           maxLength: 255
           example: 'rabies shot'
       required:
         - description
-    Visit:
-      title: Visit
-      description: A booking for a vet visit.
+    Prescription:
+      title: Prescription
+      description: A booking for a vet prescription.
       allOf:
-        - $ref: '#/components/schemas/VisitFields'
+        - $ref: '#/components/schemas/PrescriptionFields'
         - type: object
           properties:
             id:
               title: ID
-              description: The ID of the visit.
+              description: The ID of the prescription.
               type: integer
               format: int32
               minimum: 0

@@ -72,16 +72,16 @@ CREATE INDEX IF NOT EXISTS idx_pets_name ON pets (name);
 ALTER SEQUENCE pets_id_seq RESTART WITH 100;
 
 
-CREATE TABLE IF NOT EXISTS visits (
+CREATE TABLE IF NOT EXISTS prescriptions (
   id SERIAL,
   pet_id INT NOT NULL,
-  visit_date DATE,
+  prescription_date DATE,
   description VARCHAR(255),
   FOREIGN KEY (pet_id) REFERENCES pets(id),
-  CONSTRAINT pk_visits PRIMARY KEY (id)
+  CONSTRAINT pk_prescriptions PRIMARY KEY (id)
 );
 
-ALTER SEQUENCE visits_id_seq RESTART WITH 100;
+ALTER SEQUENCE prescriptions_id_seq RESTART WITH 100;
 
 CREATE TABLE IF NOT EXISTS users (
   username VARCHAR(20) NOT NULL ,

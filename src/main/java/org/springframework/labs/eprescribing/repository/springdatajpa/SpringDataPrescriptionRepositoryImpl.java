@@ -16,8 +16,12 @@
 
 package org.springframework.labs.eprescribing.repository.springdatajpa;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+
 import org.springframework.context.annotation.Profile;
-import org.springframework.labs.eprescribing.model.Visit;
+import org.springframework.dao.DataAccessException;
+import org.springframework.labs.eprescribing.model.Prescription;
 
 /**
  * @author Vitaliy Fedoriv
@@ -25,8 +29,19 @@ import org.springframework.labs.eprescribing.model.Visit;
  */
 
 @Profile("spring-data-jpa")
-public interface VisitRepositoryOverride {
-	
-	void delete(Visit visit);
+public class SpringDataPrescriptionRepositoryImpl implements PrescriptionRepositoryOverride {
+
+	@PersistenceContext
+    private EntityManager em;
+
+	@Override
+	public void delete(Prescription prescription) throws DataAccessException {
+		String prescriptionId = prescription.getId().toString();
+		this.em.createQuery("DELETE FROM Prescription prescription WHERE id=" + prescriptionId).executeUpdate();
+        if (em.contains(prescription)) {
+            em.remove(prescription);
+        }
+	}
+
 
 }

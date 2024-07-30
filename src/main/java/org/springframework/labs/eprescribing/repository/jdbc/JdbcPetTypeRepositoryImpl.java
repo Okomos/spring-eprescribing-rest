@@ -34,7 +34,7 @@ import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.labs.eprescribing.model.Pet;
 import org.springframework.labs.eprescribing.model.PetType;
-import org.springframework.labs.eprescribing.model.Visit;
+import org.springframework.labs.eprescribing.model.Prescription;
 import org.springframework.labs.eprescribing.repository.PetTypeRepository;
 import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.stereotype.Repository;
@@ -126,16 +126,16 @@ public class JdbcPetTypeRepositoryImpl implements PetTypeRepository {
 		for (Pet pet : pets){
 			Map<String, Object> pet_params = new HashMap<>();
 			pet_params.put("id", pet.getId());
-			List<Visit> visits = new ArrayList<Visit>();
-			visits = this.namedParameterJdbcTemplate.query(
-		            "SELECT id, pet_id, visit_date, description FROM visits WHERE pet_id = :id",
+			List<Prescription> prescriptions = new ArrayList<Prescription>();
+			prescriptions = this.namedParameterJdbcTemplate.query(
+		            "SELECT id, pet_id, prescription_date, description FROM prescriptions WHERE pet_id = :id",
 		            pet_params,
-		            BeanPropertyRowMapper.newInstance(Visit.class));
-	        // cascade delete visits
-	        for (Visit visit : visits){
-	        	Map<String, Object> visit_params = new HashMap<>();
-	        	visit_params.put("id", visit.getId());
-	        	this.namedParameterJdbcTemplate.update("DELETE FROM visits WHERE id=:id", visit_params);
+		            BeanPropertyRowMapper.newInstance(Prescription.class));
+	        // cascade delete prescriptions
+	        for (Prescription prescription : prescriptions){
+	        	Map<String, Object> prescription_params = new HashMap<>();
+	        	prescription_params.put("id", prescription.getId());
+	        	this.namedParameterJdbcTemplate.update("DELETE FROM prescriptions WHERE id=:id", prescription_params);
 	        }
 	        this.namedParameterJdbcTemplate.update("DELETE FROM pets WHERE id=:id", pet_params);
         }

@@ -176,28 +176,28 @@ abstract class AbstractClinicServiceTests {
 
     @Test
     @Transactional
-    void shouldAddNewVisitForPet() {
+    void shouldAddNewPrescriptionForPet() {
         Pet pet7 = this.clinicService.findPetById(7);
-        int found = pet7.getVisits().size();
-        Visit visit = new Visit();
-        pet7.addVisit(visit);
-        visit.setDescription("test");
-        this.clinicService.saveVisit(visit);
+        int found = pet7.getPrescriptions().size();
+        Prescription prescription = new Prescription();
+        pet7.addPrescription(prescription);
+        prescription.setDescription("test");
+        this.clinicService.savePrescription(prescription);
         this.clinicService.savePet(pet7);
 
         pet7 = this.clinicService.findPetById(7);
-        assertThat(pet7.getVisits().size()).isEqualTo(found + 1);
-        assertThat(visit.getId()).isNotNull();
+        assertThat(pet7.getPrescriptions().size()).isEqualTo(found + 1);
+        assertThat(prescription.getId()).isNotNull();
     }
 
     @Test
-       void shouldFindVisitsByPetId() throws Exception {
-        Collection<Visit> visits = this.clinicService.findVisitsByPetId(7);
-        assertThat(visits.size()).isEqualTo(2);
-        Visit[] visitArr = visits.toArray(new Visit[visits.size()]);
-        assertThat(visitArr[0].getPet()).isNotNull();
-        assertThat(visitArr[0].getDate()).isNotNull();
-        assertThat(visitArr[0].getPet().getId()).isEqualTo(7);
+       void shouldFindPrescriptionsByPetId() throws Exception {
+        Collection<Prescription> prescriptions = this.clinicService.findPrescriptionsByPetId(7);
+        assertThat(prescriptions.size()).isEqualTo(2);
+        Prescription[] prescriptionArr = prescriptions.toArray(new Prescription[prescriptions.size()]);
+        assertThat(prescriptionArr[0].getPet()).isNotNull();
+        assertThat(prescriptionArr[0].getDate()).isNotNull();
+        assertThat(prescriptionArr[0].getPet().getId()).isEqualTo(7);
     }
 
     @Test
@@ -223,65 +223,65 @@ abstract class AbstractClinicServiceTests {
     }
 
     @Test
-    void shouldFindVisitDyId(){
-    	Visit visit = this.clinicService.findVisitById(1);
-    	assertThat(visit.getId()).isEqualTo(1);
-    	assertThat(visit.getPet().getName()).isEqualTo("Samantha");
+    void shouldFindPrescriptionDyId(){
+    	Prescription prescription = this.clinicService.findPrescriptionById(1);
+    	assertThat(prescription.getId()).isEqualTo(1);
+    	assertThat(prescription.getPet().getName()).isEqualTo("Samantha");
     }
 
     @Test
-    void shouldFindAllVisits(){
-        Collection<Visit> visits = this.clinicService.findAllVisits();
-        Visit visit1 = EntityUtils.getById(visits, Visit.class, 1);
-        assertThat(visit1.getPet().getName()).isEqualTo("Samantha");
-        Visit visit3 = EntityUtils.getById(visits, Visit.class, 3);
-        assertThat(visit3.getPet().getName()).isEqualTo("Max");
+    void shouldFindAllPrescriptions(){
+        Collection<Prescription> prescriptions = this.clinicService.findAllPrescriptions();
+        Prescription prescription1 = EntityUtils.getById(prescriptions, Prescription.class, 1);
+        assertThat(prescription1.getPet().getName()).isEqualTo("Samantha");
+        Prescription prescription3 = EntityUtils.getById(prescriptions, Prescription.class, 3);
+        assertThat(prescription3.getPet().getName()).isEqualTo("Max");
     }
 
     @Test
     @Transactional
-    void shouldInsertVisit() {
-        Collection<Visit> visits = this.clinicService.findAllVisits();
-        int found = visits.size();
+    void shouldInsertPrescription() {
+        Collection<Prescription> prescriptions = this.clinicService.findAllPrescriptions();
+        int found = prescriptions.size();
 
         Pet pet = this.clinicService.findPetById(1);
 
-        Visit visit = new Visit();
-        visit.setPet(pet);
-        visit.setDate(LocalDate.now());
-        visit.setDescription("new visit");
+        Prescription prescription = new Prescription();
+        prescription.setPet(pet);
+        prescription.setDate(LocalDate.now());
+        prescription.setDescription("new prescription");
 
 
-        this.clinicService.saveVisit(visit);
-        assertThat(visit.getId().longValue()).isNotEqualTo(0);
+        this.clinicService.savePrescription(prescription);
+        assertThat(prescription.getId().longValue()).isNotEqualTo(0);
 
-        visits = this.clinicService.findAllVisits();
-        assertThat(visits.size()).isEqualTo(found + 1);
+        prescriptions = this.clinicService.findAllPrescriptions();
+        assertThat(prescriptions.size()).isEqualTo(found + 1);
     }
 
     @Test
     @Transactional
-    void shouldUpdateVisit(){
-    	Visit visit = this.clinicService.findVisitById(1);
-    	String oldDesc = visit.getDescription();
+    void shouldUpdatePrescription(){
+    	Prescription prescription = this.clinicService.findPrescriptionById(1);
+    	String oldDesc = prescription.getDescription();
         String newDesc = oldDesc + "X";
-        visit.setDescription(newDesc);
-        this.clinicService.saveVisit(visit);
-        visit = this.clinicService.findVisitById(1);
-        assertThat(visit.getDescription()).isEqualTo(newDesc);
+        prescription.setDescription(newDesc);
+        this.clinicService.savePrescription(prescription);
+        prescription = this.clinicService.findPrescriptionById(1);
+        assertThat(prescription.getDescription()).isEqualTo(newDesc);
     }
 
     @Test
     @Transactional
-    void shouldDeleteVisit(){
-    	Visit visit = this.clinicService.findVisitById(1);
-        this.clinicService.deleteVisit(visit);
+    void shouldDeletePrescription(){
+    	Prescription prescription = this.clinicService.findPrescriptionById(1);
+        this.clinicService.deletePrescription(prescription);
         try {
-        	visit = this.clinicService.findVisitById(1);
+        	prescription = this.clinicService.findPrescriptionById(1);
 		} catch (Exception e) {
-			visit = null;
+			prescription = null;
 		}
-        assertThat(visit).isNull();
+        assertThat(prescription).isNull();
     }
 
     @Test

@@ -147,7 +147,7 @@ eprescribing.security.enable=true
 This will secure all APIs and in order to access them, basic authentication is required.
 Apart from authentication, APIs also require authorization. This is done via roles that a user can have.
 The existing roles are listed below with the corresponding permissions 
-* OWNER_ADMIN -> OwnerController, PetController, PetTypeController (getAllPetTypes and getPetType), VisitController
+* OWNER_ADMIN -> OwnerController, PetController, PetTypeController (getAllPetTypes and getPetType), PrescriptionController
 * VET_ADMIN   -> PetTypeController, SpecialityController, VetController
 * ADMIN       -> UserController
 
