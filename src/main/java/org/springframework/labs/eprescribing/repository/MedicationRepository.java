@@ -20,11 +20,11 @@ import java.util.List;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.labs.eprescribing.model.BaseEntity;
-import org.springframework.labs.eprescribing.model.Pet;
-import org.springframework.labs.eprescribing.model.PetType;
+import org.springframework.labs.eprescribing.model.Medication;
+import org.springframework.labs.eprescribing.model.MedicationType;
 
 /**
- * Repository class for <code>Pet</code> domain objects All method names are compliant with Spring Data naming
+ * Repository class for <code>Medication</code> domain objects All method names are compliant with Spring Data naming
  * conventions so this interface can easily be extended for Spring Data See here: http://static.springsource.org/spring-data/jpa/docs/current/reference/html/jpa.repositories.html#jpa.query-methods.query-creation
  *
  * @author Ken Krebs
@@ -33,46 +33,46 @@ import org.springframework.labs.eprescribing.model.PetType;
  * @author Michael Isvy
  * @author Vitaliy Fedoriv
  */
-public interface PetRepository {
+public interface MedicationRepository {
 
     /**
-     * Retrieve all <code>PetType</code>s from the data store.
+     * Retrieve all <code>MedicationType</code>s from the data store.
      *
-     * @return a <code>Collection</code> of <code>PetType</code>s
+     * @return a <code>Collection</code> of <code>MedicationType</code>s
      */
-    List<PetType> findPetTypes() throws DataAccessException;
+    List<MedicationType> findMedicationTypes() throws DataAccessException;
 
     /**
-     * Retrieve a <code>Pet</code> from the data store by id.
+     * Retrieve a <code>Medication</code> from the data store by id.
      *
      * @param id the id to search for
-     * @return the <code>Pet</code> if found
+     * @return the <code>Medication</code> if found
      * @throws org.springframework.dao.DataRetrievalFailureException if not found
      */
-    Pet findById(int id) throws DataAccessException;
+    Medication findById(int id) throws DataAccessException;
 
     /**
-     * Save a <code>Pet</code> to the data store, either inserting or updating it.
+     * Save a <code>Medication</code> to the data store, either inserting or updating it.
      *
-     * @param pet the <code>Pet</code> to save
+     * @param medication the <code>Medication</code> to save
      * @see BaseEntity#isNew
      */
-    void save(Pet pet) throws DataAccessException;
+    void save(Medication medication) throws DataAccessException;
     
     /**
-     * Retrieve <code>Pet</code>s from the data store, returning all owners 
+     * Retrieve <code>Medication</code>s from the data store, returning all owners 
      *
-     * @return a <code>Collection</code> of <code>Pet</code>s (or an empty <code>Collection</code> if none
+     * @return a <code>Collection</code> of <code>Medication</code>s (or an empty <code>Collection</code> if none
      * found)
      */
-	Collection<Pet> findAll() throws DataAccessException;
+	Collection<Medication> findAll() throws DataAccessException;
 
     /**
-     * Delete an <code>Pet</code> to the data store by <code>Pet</code>.
+     * Delete an <code>Medication</code> to the data store by <code>Medication</code>.
      *
-     * @param pet the <code>Pet</code> to delete
+     * @param medication the <code>Medication</code> to delete
      * 
      */
-	void delete(Pet pet) throws DataAccessException;
+	void delete(Medication medication) throws DataAccessException;
 
 }

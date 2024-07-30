@@ -17,7 +17,7 @@
 package org.springframework.labs.eprescribing.repository.springdatajpa;
 
 import org.springframework.context.annotation.Profile;
-import org.springframework.labs.eprescribing.model.Pet;
+import org.springframework.labs.eprescribing.model.Medication;
 
 /**
  * @author Vitaliy Fedoriv
@@ -25,8 +25,8 @@ import org.springframework.labs.eprescribing.model.Pet;
  */
 
 @Profile("spring-data-jpa")
-public interface PetRepositoryOverride {
+public interface MedicationRepositoryOverride {
 	
-	void delete(Pet pet);
+	void delete(Medication medication);
 
 }

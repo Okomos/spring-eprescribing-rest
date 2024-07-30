@@ -42,11 +42,11 @@ public class Prescription extends BaseEntity {
     private String description;
 
     /**
-     * Holds value of property pet.
+     * Holds value of property medication.
      */
     @ManyToOne
-    @JoinColumn(name = "pet_id")
-    private Pet pet;
+    @JoinColumn(name = "medication_id")
+    private Medication medication;
 
 
     /**
@@ -94,21 +94,21 @@ public class Prescription extends BaseEntity {
     }
 
     /**
-     * Getter for property pet.
+     * Getter for property medication.
      *
-     * @return Value of property pet.
+     * @return Value of property medication.
      */
-    public Pet getPet() {
-        return this.pet;
+    public Medication getMedication() {
+        return this.medication;
     }
 
     /**
-     * Setter for property pet.
+     * Setter for property medication.
      *
-     * @param pet New value of property pet.
+     * @param medication New value of property medication.
      */
-    public void setPet(Pet pet) {
-        this.pet = pet;
+    public void setMedication(Medication medication) {
+        this.medication = medication;
     }
 
 }

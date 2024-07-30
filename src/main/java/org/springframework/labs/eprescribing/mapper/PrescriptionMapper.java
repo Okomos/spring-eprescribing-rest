@@ -11,13 +11,13 @@ import java.util.Collection;
 /**
  * Map Prescription & PrescriptionDto using mapstruct
  */
-@Mapper(uses = PetMapper.class)
+@Mapper(uses = MedicationMapper.class)
 public interface PrescriptionMapper {
     Prescription toPrescription(PrescriptionDto prescriptionDto);
 
     Prescription toPrescription(PrescriptionFieldsDto prescriptionFieldsDto);
 
-    @Mapping(source = "pet.id", target = "petId")
+    @Mapping(source = "medication.id", target = "medicationId")
     PrescriptionDto toPrescriptionDto(Prescription prescription);
 
     Collection<PrescriptionDto> toPrescriptionsDto(Collection<Prescription> prescriptions);

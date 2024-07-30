@@ -23,43 +23,43 @@ import java.util.*;
 
 
 /**
- * Simple business object representing a pet.
+ * Simple business object representing a medication.
  *
  * @author Ken Krebs
  * @author Juergen Hoeller
  * @author Sam Brannen
  */
 @Entity
-@Table(name = "pets")
-public class Pet extends NamedEntity {
+@Table(name = "medications")
+public class Medication extends NamedEntity {
 
-    @Column(name = "birth_date", columnDefinition = "DATE")
-    private LocalDate birthDate;
+    @Column(name = "expiration_date", columnDefinition = "DATE")
+    private LocalDate expirationDate;
 
     @ManyToOne
     @JoinColumn(name = "type_id")
-    private PetType type;
+    private MedicationType type;
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
     private Owner owner;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "pet", fetch = FetchType.EAGER)
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "medication", fetch = FetchType.EAGER)
     private Set<Prescription> prescriptions;
 
-    public LocalDate getBirthDate() {
-        return this.birthDate;
+    public LocalDate getExpirationDate() {
+        return this.expirationDate;
     }
 
-    public void setBirthDate(LocalDate birthDate) {
-        this.birthDate = birthDate;
+    public void setExpirationDate(LocalDate expirationDate) {
+        this.expirationDate = expirationDate;
     }
 
-    public PetType getType() {
+    public MedicationType getType() {
         return this.type;
     }
 
-    public void setType(PetType type) {
+    public void setType(MedicationType type) {
         this.type = type;
     }
 
@@ -94,7 +94,7 @@ public class Pet extends NamedEntity {
 
     public void addPrescription(Prescription prescription) {
         getPrescriptionsInternal().add(prescription);
-        prescription.setPet(this);
+        prescription.setMedication(this);
     }
 
 }

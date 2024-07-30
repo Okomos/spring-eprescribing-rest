@@ -24,14 +24,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.labs.eprescribing.model.Owner;
-import org.springframework.labs.eprescribing.model.Pet;
-import org.springframework.labs.eprescribing.model.PetType;
+import org.springframework.labs.eprescribing.model.Medication;
+import org.springframework.labs.eprescribing.model.MedicationType;
 import org.springframework.labs.eprescribing.model.Specialty;
 import org.springframework.labs.eprescribing.model.Vet;
 import org.springframework.labs.eprescribing.model.Prescription;
 import org.springframework.labs.eprescribing.repository.OwnerRepository;
-import org.springframework.labs.eprescribing.repository.PetRepository;
-import org.springframework.labs.eprescribing.repository.PetTypeRepository;
+import org.springframework.labs.eprescribing.repository.MedicationRepository;
+import org.springframework.labs.eprescribing.repository.MedicationTypeRepository;
 import org.springframework.labs.eprescribing.repository.SpecialtyRepository;
 import org.springframework.labs.eprescribing.repository.VetRepository;
 import org.springframework.labs.eprescribing.repository.PrescriptionRepository;
@@ -49,39 +49,39 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ClinicServiceImpl implements ClinicService {
 
-    private PetRepository petRepository;
+    private MedicationRepository medicationRepository;
     private VetRepository vetRepository;
     private OwnerRepository ownerRepository;
     private PrescriptionRepository prescriptionRepository;
     private SpecialtyRepository specialtyRepository;
-	private PetTypeRepository petTypeRepository;
+	private MedicationTypeRepository medicationTypeRepository;
 
     @Autowired
      public ClinicServiceImpl(
-       		 PetRepository petRepository,
+       		 MedicationRepository medicationRepository,
     		 VetRepository vetRepository,
     		 OwnerRepository ownerRepository,
     		 PrescriptionRepository prescriptionRepository,
     		 SpecialtyRepository specialtyRepository,
-			 PetTypeRepository petTypeRepository) {
-        this.petRepository = petRepository;
+			 MedicationTypeRepository medicationTypeRepository) {
+        this.medicationRepository = medicationRepository;
         this.vetRepository = vetRepository;
         this.ownerRepository = ownerRepository;
         this.prescriptionRepository = prescriptionRepository;
         this.specialtyRepository = specialtyRepository;
-		this.petTypeRepository = petTypeRepository;
+		this.medicationTypeRepository = medicationTypeRepository;
     }
 
 	@Override
 	@Transactional(readOnly = true)
-	public Collection<Pet> findAllPets() throws DataAccessException {
-		return petRepository.findAll();
+	public Collection<Medication> findAllMedications() throws DataAccessException {
+		return medicationRepository.findAll();
 	}
 
 	@Override
 	@Transactional
-	public void deletePet(Pet pet) throws DataAccessException {
-		petRepository.delete(pet);
+	public void deleteMedication(Medication medication) throws DataAccessException {
+		medicationRepository.delete(medication);
 	}
 
 	@Override
@@ -154,33 +154,33 @@ public class ClinicServiceImpl implements ClinicService {
 
 	@Override
     @Transactional(readOnly = true)
-	public PetType findPetTypeById(int petTypeId) {
-		PetType petType = null;
+	public MedicationType findMedicationTypeById(int medicationTypeId) {
+		MedicationType medicationType = null;
 		try {
-			petType = petTypeRepository.findById(petTypeId);
+			medicationType = medicationTypeRepository.findById(medicationTypeId);
 		} catch (ObjectRetrievalFailureException|EmptyResultDataAccessException e) {
 		// just ignore not found exceptions for Jdbc/Jpa realization
 			return null;
 		}
-		return petType;
+		return medicationType;
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Collection<PetType> findAllPetTypes() throws DataAccessException {
-		return petTypeRepository.findAll();
+	public Collection<MedicationType> findAllMedicationTypes() throws DataAccessException {
+		return medicationTypeRepository.findAll();
 	}
 
 	@Override
 	@Transactional
-	public void savePetType(PetType petType) throws DataAccessException {
-		petTypeRepository.save(petType);
+	public void saveMedicationType(MedicationType medicationType) throws DataAccessException {
+		medicationTypeRepository.save(medicationType);
 	}
 
 	@Override
 	@Transactional
-	public void deletePetType(PetType petType) throws DataAccessException {
-		petTypeRepository.delete(petType);
+	public void deleteMedicationType(MedicationType medicationType) throws DataAccessException {
+		medicationTypeRepository.delete(medicationType);
 	}
 
 	@Override
@@ -216,8 +216,8 @@ public class ClinicServiceImpl implements ClinicService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Collection<PetType> findPetTypes() throws DataAccessException {
-		return petRepository.findPetTypes();
+	public Collection<MedicationType> findMedicationTypes() throws DataAccessException {
+		return medicationRepository.findMedicationTypes();
 	}
 
 	@Override
@@ -235,21 +235,21 @@ public class ClinicServiceImpl implements ClinicService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Pet findPetById(int id) throws DataAccessException {
-		Pet pet = null;
+	public Medication findMedicationById(int id) throws DataAccessException {
+		Medication medication = null;
 		try {
-			pet = petRepository.findById(id);
+			medication = medicationRepository.findById(id);
 		} catch (ObjectRetrievalFailureException|EmptyResultDataAccessException e) {
 		// just ignore not found exceptions for Jdbc/Jpa realization
 			return null;
 		}
-		return pet;
+		return medication;
 	}
 
 	@Override
 	@Transactional
-	public void savePet(Pet pet) throws DataAccessException {
-		petRepository.save(pet);
+	public void saveMedication(Medication medication) throws DataAccessException {
+		medicationRepository.save(medication);
 	}
 
 	@Override
@@ -280,8 +280,8 @@ public class ClinicServiceImpl implements ClinicService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Collection<Prescription> findPrescriptionsByPetId(int petId) {
-		return prescriptionRepository.findByPetId(petId);
+	public Collection<Prescription> findPrescriptionsByMedicationId(int medicationId) {
+		return prescriptionRepository.findByMedicationId(medicationId);
 	}
 
     @Override
@@ -299,14 +299,14 @@ public class ClinicServiceImpl implements ClinicService {
 
     @Override
     @Transactional(readOnly = true)
-    public PetType findPetTypeByName(String name){
-        PetType petType;
+    public MedicationType findMedicationTypeByName(String name){
+        MedicationType medicationType;
         try {
-            petType = petTypeRepository.findByName(name);
+            medicationType = medicationTypeRepository.findByName(name);
         } catch (ObjectRetrievalFailureException|EmptyResultDataAccessException e) {
             // just ignore not found exceptions for Jdbc/Jpa realization
             return null;
         }
-        return petType;
+        return medicationType;
     }
 }

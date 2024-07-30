@@ -24,18 +24,18 @@ import java.util.Date;
 
 /**
  * {@link RowMapper} implementation mapping data from a {@link ResultSet} to the corresponding properties
- * of the {@link JdbcPet} class.
+ * of the {@link JdbcMedication} class.
  */
-public class JdbcPetRowMapper implements RowMapper<JdbcPet> {
+public class JdbcMedicationRowMapper implements RowMapper<JdbcMedication> {
 
     @Override
-    public JdbcPet mapRow(ResultSet rs, int rownum) throws SQLException {
-        JdbcPet pet = new JdbcPet();
-        pet.setId(rs.getInt("pets_id"));
-        pet.setName(rs.getString("name"));
-        pet.setBirthDate(rs.getObject("birth_date", LocalDate.class));
-        pet.setTypeId(rs.getInt("type_id"));
-        pet.setOwnerId(rs.getInt("owner_id"));
-        return pet;
+    public JdbcMedication mapRow(ResultSet rs, int rownum) throws SQLException {
+        JdbcMedication medication = new JdbcMedication();
+        medication.setId(rs.getInt("medications_id"));
+        medication.setName(rs.getString("name"));
+        medication.setExpirationDate(rs.getObject("expiration_date", LocalDate.class));
+        medication.setTypeId(rs.getInt("type_id"));
+        medication.setOwnerId(rs.getInt("owner_id"));
+        return medication;
     }
 }

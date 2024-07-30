@@ -17,8 +17,8 @@
 package org.springframework.labs.eprescribing.repository.springdatajpa;
 
 import org.springframework.context.annotation.Profile;
-import org.springframework.labs.eprescribing.model.Pet;
-import org.springframework.labs.eprescribing.model.PetType;
+import org.springframework.labs.eprescribing.model.Medication;
+import org.springframework.labs.eprescribing.model.MedicationType;
 import org.springframework.labs.eprescribing.model.Prescription;
 
 import jakarta.persistence.EntityManager;
@@ -31,26 +31,26 @@ import java.util.List;
  */
 
 @Profile("spring-data-jpa")
-public class SpringDataPetTypeRepositoryImpl implements PetTypeRepositoryOverride {
+public class SpringDataMedicationTypeRepositoryImpl implements MedicationTypeRepositoryOverride {
 
 	@PersistenceContext
     private EntityManager em;
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void delete(PetType petType) {
-        this.em.remove(this.em.contains(petType) ? petType : this.em.merge(petType));
-		Integer petTypeId = petType.getId();
+	public void delete(MedicationType medicationType) {
+        this.em.remove(this.em.contains(medicationType) ? medicationType : this.em.merge(medicationType));
+		Integer medicationTypeId = medicationType.getId();
 
-		List<Pet> pets = this.em.createQuery("SELECT pet FROM Pet pet WHERE type.id=" + petTypeId).getResultList();
-		for (Pet pet : pets){
-			List<Prescription> prescriptions = pet.getPrescriptions();
+		List<Medication> medications = this.em.createQuery("SELECT medication FROM Medication medication WHERE type.id=" + medicationTypeId).getResultList();
+		for (Medication medication : medications){
+			List<Prescription> prescriptions = medication.getPrescriptions();
 			for (Prescription prescription : prescriptions){
 				this.em.createQuery("DELETE FROM Prescription prescription WHERE id=" + prescription.getId()).executeUpdate();
 			}
-			this.em.createQuery("DELETE FROM Pet pet WHERE id=" + pet.getId()).executeUpdate();
+			this.em.createQuery("DELETE FROM Medication medication WHERE id=" + medication.getId()).executeUpdate();
 		}
-		this.em.createQuery("DELETE FROM PetType pettype WHERE id=" + petTypeId).executeUpdate();
+		this.em.createQuery("DELETE FROM MedicationType medicationtype WHERE id=" + medicationTypeId).executeUpdate();
 	}
 
 }

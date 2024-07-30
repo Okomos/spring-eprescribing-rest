@@ -27,8 +27,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.labs.eprescribing.mapper.PrescriptionMapper;
 import org.springframework.labs.eprescribing.model.Owner;
-import org.springframework.labs.eprescribing.model.Pet;
-import org.springframework.labs.eprescribing.model.PetType;
+import org.springframework.labs.eprescribing.model.Medication;
+import org.springframework.labs.eprescribing.model.MedicationType;
 import org.springframework.labs.eprescribing.model.Prescription;
 import org.springframework.labs.eprescribing.rest.advice.ExceptionControllerAdvice;
 import org.springframework.labs.eprescribing.rest.controller.PrescriptionRestController;
@@ -87,28 +87,28 @@ class PrescriptionRestControllerTests {
     	owner.setCity("McFarland");
     	owner.setTelephone("6085558763");
 
-    	PetType petType = new PetType();
-    	petType.setId(2);
-    	petType.setName("dog");
+    	MedicationType medicationType = new MedicationType();
+    	medicationType.setId(2);
+    	medicationType.setName("dog");
 
-    	Pet pet = new Pet();
-    	pet.setId(8);
-    	pet.setName("Rosy");
-        pet.setBirthDate(LocalDate.now());
-    	pet.setOwner(owner);
-    	pet.setType(petType);
+    	Medication medication = new Medication();
+    	medication.setId(8);
+    	medication.setName("Rosy");
+        medication.setExpirationDate(LocalDate.now());
+    	medication.setOwner(owner);
+    	medication.setType(medicationType);
 
 
     	Prescription prescription = new Prescription();
     	prescription.setId(2);
-    	prescription.setPet(pet);
+    	prescription.setMedication(medication);
         prescription.setDate(LocalDate.now());
     	prescription.setDescription("rabies shot");
     	prescriptions.add(prescription);
 
     	prescription = new Prescription();
     	prescription.setId(3);
-    	prescription.setPet(pet);
+    	prescription.setMedication(medication);
         prescription.setDate(LocalDate.now());
     	prescription.setDescription("neutered");
     	prescriptions.add(prescription);

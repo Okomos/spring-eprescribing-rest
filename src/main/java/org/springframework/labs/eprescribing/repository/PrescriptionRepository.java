@@ -42,7 +42,7 @@ public interface PrescriptionRepository {
      */
     void save(Prescription prescription) throws DataAccessException;
 
-    List<Prescription> findByPetId(Integer petId);
+    List<Prescription> findByMedicationId(Integer medicationId);
     
 	Prescription findById(int id) throws DataAccessException;
 	

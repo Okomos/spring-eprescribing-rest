@@ -21,21 +21,21 @@ import org.springframework.context.annotation.Profile;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.Repository;
-import org.springframework.labs.eprescribing.model.Pet;
-import org.springframework.labs.eprescribing.model.PetType;
-import org.springframework.labs.eprescribing.repository.PetRepository;
+import org.springframework.labs.eprescribing.model.Medication;
+import org.springframework.labs.eprescribing.model.MedicationType;
+import org.springframework.labs.eprescribing.repository.MedicationRepository;
 
 /**
- * Spring Data JPA specialization of the {@link PetRepository} interface
+ * Spring Data JPA specialization of the {@link MedicationRepository} interface
  *
  * @author Michael Isvy
  * @author Vitaliy Fedoriv
  */
 
 @Profile("spring-data-jpa")
-public interface SpringDataPetRepository extends PetRepository, Repository<Pet, Integer>, PetRepositoryOverride {
+public interface SpringDataMedicationRepository extends MedicationRepository, Repository<Medication, Integer>, MedicationRepositoryOverride {
 
     @Override
-    @Query("SELECT ptype FROM PetType ptype ORDER BY ptype.name")
-    List<PetType> findPetTypes() throws DataAccessException;
+    @Query("SELECT ptype FROM MedicationType ptype ORDER BY ptype.name")
+    List<MedicationType> findMedicationTypes() throws DataAccessException;
 }

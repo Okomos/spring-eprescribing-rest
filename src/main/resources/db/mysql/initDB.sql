@@ -45,10 +45,10 @@ CREATE TABLE IF NOT EXISTS owners (
   INDEX(last_name)
 ) engine=InnoDB;
 
-CREATE TABLE IF NOT EXISTS pets (
+CREATE TABLE IF NOT EXISTS medications (
   id INT(4) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
   name VARCHAR(30),
-  birth_date DATE,
+  expiration_date DATE,
   type_id INT(4) UNSIGNED NOT NULL,
   owner_id INT(4) UNSIGNED NOT NULL,
   INDEX(name),
@@ -58,10 +58,10 @@ CREATE TABLE IF NOT EXISTS pets (
 
 CREATE TABLE IF NOT EXISTS prescriptions (
   id INT(4) UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  pet_id INT(4) UNSIGNED NOT NULL,
+  medication_id INT(4) UNSIGNED NOT NULL,
   prescription_date DATE,
   description VARCHAR(255),
-  FOREIGN KEY (pet_id) REFERENCES pets(id)
+  FOREIGN KEY (medication_id) REFERENCES medications(id)
 ) engine=InnoDB;
 
 CREATE TABLE IF NOT EXISTS users (

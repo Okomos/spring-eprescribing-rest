@@ -56,28 +56,28 @@ CREATE INDEX IF NOT EXISTS idx_owners_last_name ON owners (last_name);
 ALTER SEQUENCE owners_id_seq RESTART WITH 100;
 
 
-CREATE TABLE IF NOT EXISTS pets (
+CREATE TABLE IF NOT EXISTS medications (
   id SERIAL,
   name VARCHAR(30),
-  birth_date DATE,
+  expiration_date DATE,
   type_id INT NOT NULL,
   owner_id INT NOT NULL,
   FOREIGN KEY (owner_id) REFERENCES owners(id),
   FOREIGN KEY (type_id) REFERENCES types(id),
-  CONSTRAINT pk_pets PRIMARY KEY (id)
+  CONSTRAINT pk_medications PRIMARY KEY (id)
 );
 
-CREATE INDEX IF NOT EXISTS idx_pets_name ON pets (name);
+CREATE INDEX IF NOT EXISTS idx_medications_name ON medications (name);
 
-ALTER SEQUENCE pets_id_seq RESTART WITH 100;
+ALTER SEQUENCE medications_id_seq RESTART WITH 100;
 
 
 CREATE TABLE IF NOT EXISTS prescriptions (
   id SERIAL,
-  pet_id INT NOT NULL,
+  medication_id INT NOT NULL,
   prescription_date DATE,
   description VARCHAR(255),
-  FOREIGN KEY (pet_id) REFERENCES pets(id),
+  FOREIGN KEY (medication_id) REFERENCES medications(id),
   CONSTRAINT pk_prescriptions PRIMARY KEY (id)
 );
 

@@ -46,26 +46,26 @@ public class JpaOwnerRepositoryImpl implements OwnerRepository {
 
 
     /**
-     * Important: in the current version of this method, we load Owners with all their Pets and Prescriptions while
-     * we do not need Prescriptions at all and we only need one property from the Pet objects (the 'name' property).
+     * Important: in the current version of this method, we load Owners with all their Medications and Prescriptions while
+     * we do not need Prescriptions at all and we only need one property from the Medication objects (the 'name' property).
      * There are some ways to improve it such as:
      * - creating a Ligtweight class (example here: https://community.jboss.org/wiki/LightweightClass)
      * - Turning on lazy-loading and using {@link OpenSessionInViewFilter}
      */
     @SuppressWarnings("unchecked")
     public Collection<Owner> findByLastName(String lastName) {
-        // using 'join fetch' because a single query should load both owners and pets
-        // using 'left join fetch' because it might happen that an owner does not have pets yet
-        Query query = this.em.createQuery("SELECT DISTINCT owner FROM Owner owner left join fetch owner.pets WHERE owner.lastName LIKE :lastName");
+        // using 'join fetch' because a single query should load both owners and medications
+        // using 'left join fetch' because it might happen that an owner does not have medications yet
+        Query query = this.em.createQuery("SELECT DISTINCT owner FROM Owner owner left join fetch owner.medications WHERE owner.lastName LIKE :lastName");
         query.setParameter("lastName", lastName + "%");
         return query.getResultList();
     }
 
     @Override
     public Owner findById(int id) {
-        // using 'join fetch' because a single query should load both owners and pets
-        // using 'left join fetch' because it might happen that an owner does not have pets yet
-        Query query = this.em.createQuery("SELECT owner FROM Owner owner left join fetch owner.pets WHERE owner.id =:id");
+        // using 'join fetch' because a single query should load both owners and medications
+        // using 'left join fetch' because it might happen that an owner does not have medications yet
+        Query query = this.em.createQuery("SELECT owner FROM Owner owner left join fetch owner.medications WHERE owner.id =:id");
         query.setParameter("id", id);
         return (Owner) query.getSingleResult();
     }

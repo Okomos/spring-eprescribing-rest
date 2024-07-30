@@ -20,7 +20,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 
 import org.springframework.context.annotation.Profile;
-import org.springframework.labs.eprescribing.model.Pet;
+import org.springframework.labs.eprescribing.model.Medication;
 
 /**
  * @author Vitaliy Fedoriv
@@ -28,18 +28,18 @@ import org.springframework.labs.eprescribing.model.Pet;
  */
 
 @Profile("spring-data-jpa")
-public class SpringDataPetRepositoryImpl implements PetRepositoryOverride {
+public class SpringDataMedicationRepositoryImpl implements MedicationRepositoryOverride {
 
 	@PersistenceContext
     private EntityManager em;
 
 	@Override
-	public void delete(Pet pet) {
-		String petId = pet.getId().toString();
-		this.em.createQuery("DELETE FROM Prescription prescription WHERE pet.id=" + petId).executeUpdate();
-		this.em.createQuery("DELETE FROM Pet pet WHERE id=" + petId).executeUpdate();
-        if (em.contains(pet)) {
-            em.remove(pet);
+	public void delete(Medication medication) {
+		String medicationId = medication.getId().toString();
+		this.em.createQuery("DELETE FROM Prescription prescription WHERE medication.id=" + medicationId).executeUpdate();
+		this.em.createQuery("DELETE FROM Medication medication WHERE id=" + medicationId).executeUpdate();
+        if (em.contains(medication)) {
+            em.remove(medication);
         }
 	}
 

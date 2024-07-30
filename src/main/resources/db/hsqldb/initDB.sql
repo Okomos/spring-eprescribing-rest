@@ -2,7 +2,7 @@ DROP TABLE vet_specialties IF EXISTS;
 DROP TABLE vets IF EXISTS;
 DROP TABLE specialties IF EXISTS;
 DROP TABLE prescriptions IF EXISTS;
-DROP TABLE pets IF EXISTS;
+DROP TABLE medications IF EXISTS;
 DROP TABLE types IF EXISTS;
 DROP TABLE owners IF EXISTS;
 DROP TABLE roles IF EXISTS;
@@ -45,25 +45,25 @@ CREATE TABLE owners (
 );
 CREATE INDEX owners_last_name ON owners (last_name);
 
-CREATE TABLE pets (
+CREATE TABLE medications (
   id         INTEGER IDENTITY PRIMARY KEY,
   name       VARCHAR(30),
-  birth_date DATE,
+  expiration_date DATE,
   type_id    INTEGER NOT NULL,
   owner_id   INTEGER NOT NULL
 );
-ALTER TABLE pets ADD CONSTRAINT fk_pets_owners FOREIGN KEY (owner_id) REFERENCES owners (id);
-ALTER TABLE pets ADD CONSTRAINT fk_pets_types FOREIGN KEY (type_id) REFERENCES types (id);
-CREATE INDEX pets_name ON pets (name);
+ALTER TABLE medications ADD CONSTRAINT fk_medications_owners FOREIGN KEY (owner_id) REFERENCES owners (id);
+ALTER TABLE medications ADD CONSTRAINT fk_medications_types FOREIGN KEY (type_id) REFERENCES types (id);
+CREATE INDEX medications_name ON medications (name);
 
 CREATE TABLE prescriptions (
   id          INTEGER IDENTITY PRIMARY KEY,
-  pet_id      INTEGER NOT NULL,
+  medication_id      INTEGER NOT NULL,
   prescription_date  DATE,
   description VARCHAR(255)
 );
-ALTER TABLE prescriptions ADD CONSTRAINT fk_prescriptions_pets FOREIGN KEY (pet_id) REFERENCES pets (id);
-CREATE INDEX prescriptions_pet_id ON prescriptions (pet_id);
+ALTER TABLE prescriptions ADD CONSTRAINT fk_prescriptions_medications FOREIGN KEY (medication_id) REFERENCES medications (id);
+CREATE INDEX prescriptions_medication_id ON prescriptions (medication_id);
 
 CREATE  TABLE users (
   username    VARCHAR(20) NOT NULL ,

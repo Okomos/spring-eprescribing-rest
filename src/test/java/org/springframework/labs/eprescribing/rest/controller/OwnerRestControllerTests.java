@@ -26,16 +26,16 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.labs.eprescribing.mapper.OwnerMapper;
-import org.springframework.labs.eprescribing.mapper.PetMapper;
+import org.springframework.labs.eprescribing.mapper.MedicationMapper;
 import org.springframework.labs.eprescribing.mapper.PrescriptionMapper;
 import org.springframework.labs.eprescribing.model.Owner;
-import org.springframework.labs.eprescribing.model.Pet;
+import org.springframework.labs.eprescribing.model.Medication;
 import org.springframework.labs.eprescribing.rest.advice.ExceptionControllerAdvice;
 import org.springframework.labs.eprescribing.rest.controller.OwnerRestController;
 import org.springframework.labs.eprescribing.service.ClinicService;
 import org.springframework.labs.eprescribing.rest.dto.OwnerDto;
-import org.springframework.labs.eprescribing.rest.dto.PetDto;
-import org.springframework.labs.eprescribing.rest.dto.PetTypeDto;
+import org.springframework.labs.eprescribing.rest.dto.MedicationDto;
+import org.springframework.labs.eprescribing.rest.dto.MedicationTypeDto;
 import org.springframework.labs.eprescribing.rest.dto.PrescriptionDto;
 import org.springframework.labs.eprescribing.service.clinicService.ApplicationTestConfig;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -72,7 +72,7 @@ class OwnerRestControllerTests {
     private OwnerMapper ownerMapper;
 
     @Autowired
-    private PetMapper petMapper;
+    private MedicationMapper medicationMapper;
 
     @Autowired
     private PrescriptionMapper prescriptionMapper;
@@ -84,7 +84,7 @@ class OwnerRestControllerTests {
 
     private List<OwnerDto> owners;
 
-    private List<PetDto> pets;
+    private List<MedicationDto> medications;
 
     private List<PrescriptionDto> prescriptions;
 
@@ -95,8 +95,8 @@ class OwnerRestControllerTests {
             .build();
         owners = new ArrayList<>();
 
-        OwnerDto ownerWithPet = new OwnerDto();
-        owners.add(ownerWithPet.id(1).firstName("George").lastName("Franklin").address("110 W. Liberty St.").city("Madison").telephone("6085551023").addPetsItem(getTestPetWithIdAndName(ownerWithPet, 1, "Rosy")));
+        OwnerDto ownerWithMedication = new OwnerDto();
+        owners.add(ownerWithMedication.id(1).firstName("George").lastName("Franklin").address("110 W. Liberty St.").city("Madison").telephone("6085551023").addMedicationsItem(getTestMedicationWithIdAndName(ownerWithMedication, 1, "Rosy")));
         OwnerDto owner = new OwnerDto();
         owners.add(owner.id(2).firstName("Betty").lastName("Davis").address("638 Cardinal Ave.").city("Sun Prairie").telephone("6085551749"));
         owner = new OwnerDto();
@@ -104,47 +104,47 @@ class OwnerRestControllerTests {
         owner = new OwnerDto();
         owners.add(owner.id(4).firstName("Harold").lastName("Davis").address("563 Friendly St.").city("Windsor").telephone("6085553198"));
 
-        PetTypeDto petType = new PetTypeDto();
-        petType.id(2)
+        MedicationTypeDto medicationType = new MedicationTypeDto();
+        medicationType.id(2)
             .name("dog");
 
-        pets = new ArrayList<>();
-        PetDto pet = new PetDto();
-        pets.add(pet.id(3)
+        medications = new ArrayList<>();
+        MedicationDto medication = new MedicationDto();
+        medications.add(medication.id(3)
             .name("Rosy")
-            .birthDate(LocalDate.now())
-            .type(petType));
+            .expirationDate(LocalDate.now())
+            .type(medicationType));
 
-        pet = new PetDto();
-        pets.add(pet.id(4)
+        medication = new MedicationDto();
+        medications.add(medication.id(4)
             .name("Jewel")
-            .birthDate(LocalDate.now())
-            .type(petType));
+            .expirationDate(LocalDate.now())
+            .type(medicationType));
 
         prescriptions = new ArrayList<>();
         PrescriptionDto prescription = new PrescriptionDto();
         prescription.setId(2);
-        prescription.setPetId(pet.getId());
+        prescription.setMedicationId(medication.getId());
         prescription.setDate(LocalDate.now());
         prescription.setDescription("rabies shot");
         prescriptions.add(prescription);
 
         prescription = new PrescriptionDto();
         prescription.setId(3);
-        prescription.setPetId(pet.getId());
+        prescription.setMedicationId(medication.getId());
         prescription.setDate(LocalDate.now());
         prescription.setDescription("neutered");
         prescriptions.add(prescription);
     }
 
-    private PetDto getTestPetWithIdAndName(final OwnerDto owner, final int id, final String name) {
-        PetTypeDto petType = new PetTypeDto();
-        PetDto pet = new PetDto();
-        pet.id(id).name(name).birthDate(LocalDate.now()).type(petType.id(2).name("dog")).addPrescriptionsItem(getTestPrescriptionForPet(pet, 1));
-        return pet;
+    private MedicationDto getTestMedicationWithIdAndName(final OwnerDto owner, final int id, final String name) {
+        MedicationTypeDto medicationType = new MedicationTypeDto();
+        MedicationDto medication = new MedicationDto();
+        medication.id(id).name(name).expirationDate(LocalDate.now()).type(medicationType.id(2).name("dog")).addPrescriptionsItem(getTestPrescriptionForMedication(medication, 1));
+        return medication;
     }
 
-    private PrescriptionDto getTestPrescriptionForPet(final PetDto pet, final int id) {
+    private PrescriptionDto getTestPrescriptionForMedication(final MedicationDto medication, final int id) {
         PrescriptionDto prescription = new PrescriptionDto();
         return prescription.id(id).date(LocalDate.now()).description("test" + id);
     }
@@ -352,33 +352,33 @@ class OwnerRestControllerTests {
 
     @Test
     @WithMockUser(roles = "OWNER_ADMIN")
-    void testCreatePetSuccess() throws Exception {
-        PetDto newPet = pets.get(0);
-        newPet.setId(999);
+    void testCreateMedicationSuccess() throws Exception {
+        MedicationDto newMedication = medications.get(0);
+        newMedication.setId(999);
         ObjectMapper mapper = new ObjectMapper();
         mapper.registerModule(new JavaTimeModule());
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-        String newPetAsJSON = mapper.writeValueAsString(newPet);
-        System.err.println("--> newPetAsJSON=" + newPetAsJSON);
-        this.mockMvc.perform(post("/api/owners/1/pets/")
-                .content(newPetAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
+        String newMedicationAsJSON = mapper.writeValueAsString(newMedication);
+        System.err.println("--> newMedicationAsJSON=" + newMedicationAsJSON);
+        this.mockMvc.perform(post("/api/owners/1/medications/")
+                .content(newMedicationAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isCreated());
     }
 
     @Test
     @WithMockUser(roles = "OWNER_ADMIN")
-    void testCreatePetError() throws Exception {
-        PetDto newPet = pets.get(0);
-        newPet.setId(null);
-        newPet.setName(null);
+    void testCreateMedicationError() throws Exception {
+        MedicationDto newMedication = medications.get(0);
+        newMedication.setId(null);
+        newMedication.setName(null);
         ObjectMapper mapper = new ObjectMapper();
         mapper.setDateFormat(new SimpleDateFormat("yyyy-MM-dd"));
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         mapper.registerModule(new JavaTimeModule());
-        String newPetAsJSON = mapper.writeValueAsString(newPet);
-        this.mockMvc.perform(post("/api/owners/1/pets/")
-                .content(newPetAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
+        String newMedicationAsJSON = mapper.writeValueAsString(newMedication);
+        this.mockMvc.perform(post("/api/owners/1/medications/")
+                .content(newMedicationAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isBadRequest()).andDo(MockMvcResultHandlers.print());
     }
 
@@ -392,23 +392,23 @@ class OwnerRestControllerTests {
         mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         String newPrescriptionAsJSON = mapper.writeValueAsString(prescriptionMapper.toPrescription(newPrescription));
         System.out.println("newPrescriptionAsJSON " + newPrescriptionAsJSON);
-        this.mockMvc.perform(post("/api/owners/1/pets/1/prescriptions")
+        this.mockMvc.perform(post("/api/owners/1/medications/1/prescriptions")
                 .content(newPrescriptionAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isCreated());
     }
 
     @Test
     @WithMockUser(roles = "OWNER_ADMIN")
-    void testGetOwnerPetSuccess() throws Exception {
+    void testGetOwnerMedicationSuccess() throws Exception {
         owners.remove(0);
         owners.remove(1);
         given(this.clinicService.findAllOwners()).willReturn(ownerMapper.toOwners(owners));
         var owner = ownerMapper.toOwner(owners.get(0));
         given(this.clinicService.findOwnerById(2)).willReturn(owner);
-        var pet = petMapper.toPet(pets.get(0));
-        pet.setOwner(owner);
-        given(this.clinicService.findPetById(1)).willReturn(pet);
-        this.mockMvc.perform(get("/api/owners/2/pets/1")
+        var medication = medicationMapper.toMedication(medications.get(0));
+        medication.setOwner(owner);
+        given(this.clinicService.findMedicationById(1)).willReturn(medication);
+        this.mockMvc.perform(get("/api/owners/2/medications/1")
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isOk())
             .andExpect(content().contentType("application/json"));
@@ -416,10 +416,10 @@ class OwnerRestControllerTests {
 
     @Test
     @WithMockUser(roles = "OWNER_ADMIN")
-    void testGetOwnersPetsNotFound() throws Exception {
+    void testGetOwnersMedicationsNotFound() throws Exception {
         owners.clear();
         given(this.clinicService.findAllOwners()).willReturn(ownerMapper.toOwners(owners));
-        this.mockMvc.perform(get("/api/owners/1/pets/1")
+        this.mockMvc.perform(get("/api/owners/1/medications/1")
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isNotFound());
     }

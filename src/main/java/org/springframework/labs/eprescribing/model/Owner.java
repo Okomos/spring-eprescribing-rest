@@ -50,7 +50,7 @@ public class Owner extends Person {
     private String telephone;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner", fetch = FetchType.EAGER)
-    private Set<Pet> pets;
+    private Set<Medication> medications;
 
 
     public String getAddress() {
@@ -77,56 +77,56 @@ public class Owner extends Person {
         this.telephone = telephone;
     }
 
-    protected Set<Pet> getPetsInternal() {
-        if (this.pets == null) {
-            this.pets = new HashSet<>();
+    protected Set<Medication> getMedicationsInternal() {
+        if (this.medications == null) {
+            this.medications = new HashSet<>();
         }
-        return this.pets;
+        return this.medications;
     }
 
-    protected void setPetsInternal(Set<Pet> pets) {
-        this.pets = pets;
+    protected void setMedicationsInternal(Set<Medication> medications) {
+        this.medications = medications;
     }
 
-    public List<Pet> getPets() {
-        List<Pet> sortedPets = new ArrayList<>(getPetsInternal());
-        PropertyComparator.sort(sortedPets, new MutableSortDefinition("name", true, true));
-        return Collections.unmodifiableList(sortedPets);
+    public List<Medication> getMedications() {
+        List<Medication> sortedMedications = new ArrayList<>(getMedicationsInternal());
+        PropertyComparator.sort(sortedMedications, new MutableSortDefinition("name", true, true));
+        return Collections.unmodifiableList(sortedMedications);
     }
 
-    public void setPets(List<Pet> pets) {
-        this.pets = new HashSet<>(pets);
+    public void setMedications(List<Medication> medications) {
+        this.medications = new HashSet<>(medications);
     }
 
-    public void addPet(Pet pet) {
-        getPetsInternal().add(pet);
-        pet.setOwner(this);
-    }
-
-    /**
-     * Return the Pet with the given name, or null if none found for this Owner.
-     *
-     * @param name to test
-     * @return true if pet name is already in use
-     */
-    public Pet getPet(String name) {
-        return getPet(name, false);
+    public void addMedication(Medication medication) {
+        getMedicationsInternal().add(medication);
+        medication.setOwner(this);
     }
 
     /**
-     * Return the Pet with the given name, or null if none found for this Owner.
+     * Return the Medication with the given name, or null if none found for this Owner.
      *
      * @param name to test
-     * @return true if pet name is already in use
+     * @return true if medication name is already in use
      */
-    public Pet getPet(String name, boolean ignoreNew) {
+    public Medication getMedication(String name) {
+        return getMedication(name, false);
+    }
+
+    /**
+     * Return the Medication with the given name, or null if none found for this Owner.
+     *
+     * @param name to test
+     * @return true if medication name is already in use
+     */
+    public Medication getMedication(String name, boolean ignoreNew) {
         name = name.toLowerCase();
-        for (Pet pet : getPetsInternal()) {
-            if (!ignoreNew || !pet.isNew()) {
-                String compName = pet.getName();
+        for (Medication medication : getMedicationsInternal()) {
+            if (!ignoreNew || !medication.isNew()) {
+                String compName = medication.getName();
                 compName = compName.toLowerCase();
                 if (compName.equals(name)) {
-                    return pet;
+                    return medication;
                 }
             }
         }

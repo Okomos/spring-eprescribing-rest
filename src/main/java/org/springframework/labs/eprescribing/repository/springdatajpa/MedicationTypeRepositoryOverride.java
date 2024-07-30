@@ -1,5 +1,5 @@
 /*
- * Copyright 2002-2013 the original author or authors.
+ * Copyright 2016-2017 the original author or authors.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,17 +13,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.labs.eprescribing.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+package org.springframework.labs.eprescribing.repository.springdatajpa;
+
+import org.springframework.context.annotation.Profile;
+import org.springframework.labs.eprescribing.model.MedicationType;
 
 /**
- * @author Juergen Hoeller
- *         Can be Cat, Dog, Hamster...
+ * @author Vitaliy Fedoriv
+ *
  */
-@Entity
-@Table(name = "types")
-public class PetType extends NamedEntity {
+
+@Profile("spring-data-jpa")
+public interface MedicationTypeRepositoryOverride {
+	
+	void delete(MedicationType medicationType);
 
 }

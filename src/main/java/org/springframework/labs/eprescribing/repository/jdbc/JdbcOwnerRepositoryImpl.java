@@ -24,8 +24,8 @@ import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
 import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.labs.eprescribing.model.Owner;
-import org.springframework.labs.eprescribing.model.Pet;
-import org.springframework.labs.eprescribing.model.PetType;
+import org.springframework.labs.eprescribing.model.Medication;
+import org.springframework.labs.eprescribing.model.MedicationType;
 import org.springframework.labs.eprescribing.model.Prescription;
 import org.springframework.labs.eprescribing.repository.OwnerRepository;
 import org.springframework.labs.eprescribing.util.EntityUtils;
@@ -73,7 +73,7 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
 
     /**
      * Loads {@link Owner Owners} from the data store by last name, returning all owners whose last name <i>starts</i> with
-     * the given name; also loads the {@link Pet Pets} and {@link Prescription Prescriptions} for the corresponding owners, if not
+     * the given name; also loads the {@link Medication Medications} and {@link Prescription Prescriptions} for the corresponding owners, if not
      * already loaded.
      */
     @Override
@@ -85,12 +85,12 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
             params,
             BeanPropertyRowMapper.newInstance(Owner.class)
         );
-        loadOwnersPetsAndPrescriptions(owners);
+        loadOwnersMedicationsAndPrescriptions(owners);
         return owners;
     }
 
     /**
-     * Loads the {@link Owner} with the supplied <code>id</code>; also loads the {@link Pet Pets} and {@link Prescription Prescriptions}
+     * Loads the {@link Owner} with the supplied <code>id</code>; also loads the {@link Medication Medications} and {@link Prescription Prescriptions}
      * for the corresponding owner, if not already loaded.
      */
     @Override
@@ -107,22 +107,22 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
         } catch (EmptyResultDataAccessException ex) {
             throw new ObjectRetrievalFailureException(Owner.class, id);
         }
-        loadPetsAndPrescriptions(owner);
+        loadMedicationsAndPrescriptions(owner);
         return owner;
     }
 
-    public void loadPetsAndPrescriptions(final Owner owner) {
+    public void loadMedicationsAndPrescriptions(final Owner owner) {
         Map<String, Object> params = new HashMap<>();
         params.put("id", owner.getId());
-        final List<JdbcPet> pets = this.namedParameterJdbcTemplate.query(
-            "SELECT pets.id as pets_id, name, birth_date, type_id, owner_id, prescriptions.id as prescription_id, prescription_date, description, prescriptions.pet_id as prescriptions_pet_id FROM pets LEFT OUTER JOIN prescriptions ON pets.id = prescriptions.pet_id WHERE owner_id=:id ORDER BY pets.id",
+        final List<JdbcMedication> medications = this.namedParameterJdbcTemplate.query(
+            "SELECT medications.id as medications_id, name, expiration_date, type_id, owner_id, prescriptions.id as prescription_id, prescription_date, description, prescriptions.medication_id as prescriptions_medication_id FROM medications LEFT OUTER JOIN prescriptions ON medications.id = prescriptions.medication_id WHERE owner_id=:id ORDER BY medications.id",
             params,
-            new JdbcPetPrescriptionExtractor()
+            new JdbcMedicationPrescriptionExtractor()
         );
-        Collection<PetType> petTypes = getPetTypes();
-        for (JdbcPet pet : pets) {
-            pet.setType(EntityUtils.getById(petTypes, PetType.class, pet.getTypeId()));
-            owner.addPet(pet);
+        Collection<MedicationType> medicationTypes = getMedicationTypes();
+        for (JdbcMedication medication : medications) {
+            medication.setType(EntityUtils.getById(medicationTypes, MedicationType.class, medication.getTypeId()));
+            owner.addMedication(medication);
         }
     }
 
@@ -140,21 +140,21 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
         }
     }
 
-    public Collection<PetType> getPetTypes() throws DataAccessException {
+    public Collection<MedicationType> getMedicationTypes() throws DataAccessException {
         return this.namedParameterJdbcTemplate.query(
             "SELECT id, name FROM types ORDER BY name", new HashMap<String, Object>(),
-            BeanPropertyRowMapper.newInstance(PetType.class));
+            BeanPropertyRowMapper.newInstance(MedicationType.class));
     }
 
     /**
-     * Loads the {@link Pet} and {@link Prescription} data for the supplied {@link List} of {@link Owner Owners}.
+     * Loads the {@link Medication} and {@link Prescription} data for the supplied {@link List} of {@link Owner Owners}.
      *
-     * @param owners the list of owners for whom the pet and prescription data should be loaded
-     * @see #loadPetsAndPrescriptions(Owner)
+     * @param owners the list of owners for whom the medication and prescription data should be loaded
+     * @see #loadMedicationsAndPrescriptions(Owner)
      */
-    private void loadOwnersPetsAndPrescriptions(List<Owner> owners) {
+    private void loadOwnersMedicationsAndPrescriptions(List<Owner> owners) {
         for (Owner owner : owners) {
-            loadPetsAndPrescriptions(owner);
+            loadMedicationsAndPrescriptions(owner);
         }
     }
 
@@ -165,7 +165,7 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
 	            new HashMap<String, Object>(),
 	            BeanPropertyRowMapper.newInstance(Owner.class));
 		for (Owner owner : owners) {
-            loadPetsAndPrescriptions(owner);
+            loadMedicationsAndPrescriptions(owner);
         }
 	    return owners;
 	}
@@ -175,19 +175,19 @@ public class JdbcOwnerRepositoryImpl implements OwnerRepository {
 	public void delete(Owner owner) throws DataAccessException {
 		Map<String, Object> owner_params = new HashMap<>();
 		owner_params.put("id", owner.getId());
-        List<Pet> pets = owner.getPets();
-        // cascade delete pets
-        for (Pet pet : pets){
-        	Map<String, Object> pet_params = new HashMap<>();
-        	pet_params.put("id", pet.getId());
+        List<Medication> medications = owner.getMedications();
+        // cascade delete medications
+        for (Medication medication : medications){
+        	Map<String, Object> medication_params = new HashMap<>();
+        	medication_params.put("id", medication.getId());
         	// cascade delete prescriptions
-        	List<Prescription> prescriptions = pet.getPrescriptions();
+        	List<Prescription> prescriptions = medication.getPrescriptions();
             for (Prescription prescription : prescriptions){
             	Map<String, Object> prescription_params = new HashMap<>();
             	prescription_params.put("id", prescription.getId());
             	this.namedParameterJdbcTemplate.update("DELETE FROM prescriptions WHERE id=:id", prescription_params);
             }
-            this.namedParameterJdbcTemplate.update("DELETE FROM pets WHERE id=:id", pet_params);
+            this.namedParameterJdbcTemplate.update("DELETE FROM medications WHERE id=:id", medication_params);
         }
         this.namedParameterJdbcTemplate.update("DELETE FROM owners WHERE id=:id", owner_params);
 	}

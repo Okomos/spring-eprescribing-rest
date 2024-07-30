@@ -59,9 +59,9 @@ public class JpaPrescriptionRepositoryImpl implements PrescriptionRepository {
 
     @Override
     @SuppressWarnings("unchecked")
-    public List<Prescription> findByPetId(Integer petId) {
-        Query query = this.em.createQuery("SELECT v FROM Prescription v where v.pet.id= :id");
-        query.setParameter("id", petId);
+    public List<Prescription> findByMedicationId(Integer medicationId) {
+        Query query = this.em.createQuery("SELECT v FROM Prescription v where v.medication.id= :id");
+        query.setParameter("id", medicationId);
         return query.getResultList();
     }
 

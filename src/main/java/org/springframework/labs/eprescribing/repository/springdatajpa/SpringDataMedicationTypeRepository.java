@@ -14,28 +14,19 @@
  * limitations under the License.
  */
 
-package org.springframework.labs.eprescribing.repository;
+package org.springframework.labs.eprescribing.repository.springdatajpa;
 
-import java.util.Collection;
-
-import org.springframework.dao.DataAccessException;
-import org.springframework.labs.eprescribing.model.PetType;
+import org.springframework.context.annotation.Profile;
+import org.springframework.data.repository.Repository;
+import org.springframework.labs.eprescribing.model.MedicationType;
+import org.springframework.labs.eprescribing.repository.MedicationTypeRepository;
 
 /**
  * @author Vitaliy Fedoriv
  *
  */
 
-public interface PetTypeRepository {
-
-	PetType findById(int id) throws DataAccessException;
-
-    PetType findByName(String name) throws DataAccessException;
-
-	Collection<PetType> findAll() throws DataAccessException;
-
-	void save(PetType petType) throws DataAccessException;
-
-	void delete(PetType petType) throws DataAccessException;
+@Profile("spring-data-jpa")
+public interface SpringDataMedicationTypeRepository extends MedicationTypeRepository, Repository<MedicationType, Integer>, MedicationTypeRepositoryOverride {
 
 }

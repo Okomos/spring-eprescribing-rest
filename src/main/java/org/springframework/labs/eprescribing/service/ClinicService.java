@@ -21,8 +21,8 @@ import java.util.Set;
 
 import org.springframework.dao.DataAccessException;
 import org.springframework.labs.eprescribing.model.Owner;
-import org.springframework.labs.eprescribing.model.Pet;
-import org.springframework.labs.eprescribing.model.PetType;
+import org.springframework.labs.eprescribing.model.Medication;
+import org.springframework.labs.eprescribing.model.MedicationType;
 import org.springframework.labs.eprescribing.model.Specialty;
 import org.springframework.labs.eprescribing.model.Vet;
 import org.springframework.labs.eprescribing.model.Prescription;
@@ -35,12 +35,12 @@ import org.springframework.labs.eprescribing.model.Prescription;
  */
 public interface ClinicService {
 
-	Pet findPetById(int id) throws DataAccessException;
-	Collection<Pet> findAllPets() throws DataAccessException;
-	void savePet(Pet pet) throws DataAccessException;
-	void deletePet(Pet pet) throws DataAccessException;
+	Medication findMedicationById(int id) throws DataAccessException;
+	Collection<Medication> findAllMedications() throws DataAccessException;
+	void saveMedication(Medication medication) throws DataAccessException;
+	void deleteMedication(Medication medication) throws DataAccessException;
 
-	Collection<Prescription> findPrescriptionsByPetId(int petId);
+	Collection<Prescription> findPrescriptionsByMedicationId(int medicationId);
 	Prescription findPrescriptionById(int prescriptionId) throws DataAccessException;
 	Collection<Prescription> findAllPrescriptions() throws DataAccessException;
 	void savePrescription(Prescription prescription) throws DataAccessException;
@@ -56,11 +56,11 @@ public interface ClinicService {
 	void deleteOwner(Owner owner) throws DataAccessException;
 	Collection<Owner> findOwnerByLastName(String lastName) throws DataAccessException;
 
-	PetType findPetTypeById(int petTypeId);
-	Collection<PetType> findAllPetTypes() throws DataAccessException;
-	Collection<PetType> findPetTypes() throws DataAccessException;
-	void savePetType(PetType petType) throws DataAccessException;
-	void deletePetType(PetType petType) throws DataAccessException;
+	MedicationType findMedicationTypeById(int medicationTypeId);
+	Collection<MedicationType> findAllMedicationTypes() throws DataAccessException;
+	Collection<MedicationType> findMedicationTypes() throws DataAccessException;
+	void saveMedicationType(MedicationType medicationType) throws DataAccessException;
+	void deleteMedicationType(MedicationType medicationType) throws DataAccessException;
 	Specialty findSpecialtyById(int specialtyId);
 	Collection<Specialty> findAllSpecialties() throws DataAccessException;
 	void saveSpecialty(Specialty specialty) throws DataAccessException;
@@ -68,5 +68,5 @@ public interface ClinicService {
 
     List<Specialty> findSpecialtiesByNameIn(Set<String> names) throws DataAccessException;
 
-    PetType findPetTypeByName(String name) throws DataAccessException;
+    MedicationType findMedicationTypeByName(String name) throws DataAccessException;
 }

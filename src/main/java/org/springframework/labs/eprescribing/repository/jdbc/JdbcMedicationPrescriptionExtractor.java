@@ -26,29 +26,29 @@ import java.sql.SQLException;
  * {@link ResultSetExtractor} implementation by using the
  * {@link OneToManyResultSetExtractor} of Spring Data Core JDBC Extensions.
  */
-public class JdbcPetPrescriptionExtractor extends
-    OneToManyResultSetExtractor<JdbcPet, Prescription, Integer> {
+public class JdbcMedicationPrescriptionExtractor extends
+    OneToManyResultSetExtractor<JdbcMedication, Prescription, Integer> {
 
-    public JdbcPetPrescriptionExtractor() {
-        super(new JdbcPetRowMapper(), new JdbcPrescriptionRowMapper());
+    public JdbcMedicationPrescriptionExtractor() {
+        super(new JdbcMedicationRowMapper(), new JdbcPrescriptionRowMapper());
     }
 
     @Override
     protected Integer mapPrimaryKey(ResultSet rs) throws SQLException {
-        return rs.getInt("pets_id");
+        return rs.getInt("medications_id");
     }
 
     @Override
     protected Integer mapForeignKey(ResultSet rs) throws SQLException {
-        if (rs.getObject("prescriptions_pet_id") == null) {
+        if (rs.getObject("prescriptions_medication_id") == null) {
             return null;
         } else {
-            return rs.getInt("prescriptions_pet_id");
+            return rs.getInt("prescriptions_medication_id");
         }
     }
 
     @Override
-    protected void addChild(JdbcPet root, Prescription child) {
+    protected void addChild(JdbcMedication root, Prescription child) {
         root.addPrescription(child);
     }
 }

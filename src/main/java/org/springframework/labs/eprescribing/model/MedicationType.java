@@ -13,36 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.springframework.labs.eprescribing.repository.jdbc;
+package org.springframework.labs.eprescribing.model;
 
-import org.springframework.labs.eprescribing.model.Pet;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 
 /**
- * Subclass of Pet that carries temporary id properties which are only relevant for a JDBC implementation of the
- * PetRepository.
- *
  * @author Juergen Hoeller
+ *         Can be Cat, Dog, Hamster...
  */
-public class JdbcPet extends Pet {
-
-    private int typeId;
-
-    private int ownerId;
-
-    public int getTypeId() {
-        return this.typeId;
-    }
-
-    public void setTypeId(int typeId) {
-        this.typeId = typeId;
-    }
-
-    public int getOwnerId() {
-        return this.ownerId;
-    }
-
-    public void setOwnerId(int ownerId) {
-        this.ownerId = ownerId;
-    }
+@Entity
+@Table(name = "types")
+public class MedicationType extends NamedEntity {
 
 }

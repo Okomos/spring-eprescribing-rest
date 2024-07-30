@@ -35,10 +35,10 @@ import org.springframework.labs.eprescribing.repository.OwnerRepository;
 public interface SpringDataOwnerRepository extends OwnerRepository, Repository<Owner, Integer> {
 
     @Override
-    @Query("SELECT DISTINCT owner FROM Owner owner left join fetch owner.pets WHERE owner.lastName LIKE :lastName%")
+    @Query("SELECT DISTINCT owner FROM Owner owner left join fetch owner.medications WHERE owner.lastName LIKE :lastName%")
     Collection<Owner> findByLastName(@Param("lastName") String lastName);
 
     @Override
-    @Query("SELECT owner FROM Owner owner left join fetch owner.pets WHERE owner.id =:id")
+    @Query("SELECT owner FROM Owner owner left join fetch owner.medications WHERE owner.id =:id")
     Owner findById(@Param("id") int id);
 }

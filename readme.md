@@ -147,8 +147,8 @@ eprescribing.security.enable=true
 This will secure all APIs and in order to access them, basic authentication is required.
 Apart from authentication, APIs also require authorization. This is done via roles that a user can have.
 The existing roles are listed below with the corresponding permissions 
-* OWNER_ADMIN -> OwnerController, PetController, PetTypeController (getAllPetTypes and getPetType), PrescriptionController
-* VET_ADMIN   -> PetTypeController, SpecialityController, VetController
+* OWNER_ADMIN -> OwnerController, MedicationController, MedicationTypeController (getAllMedicationTypes and getMedicationType), PrescriptionController
+* VET_ADMIN   -> MedicationTypeController, SpecialityController, VetController
 * ADMIN       -> UserController
 
 There is an existing user with the username `admin` and password `admin` that has access to all APIs.
@@ -221,7 +221,7 @@ GitHub org is the "canonical" implementation, currently based on Spring Boot and
 This [spring-eprescribing-rest](https://github.com/spring-eprescribing/spring-eprescribing-rest/) project is one of the [several forks](https://spring-eprescribing.github.io/docs/forks.html) 
 hosted in a special GitHub org: [spring-eprescribing](https://github.com/spring-eprescribing).
 If you have a special interest in a different technology stack
-that could be used to implement the Pet Clinic then please join the community there.
+that could be used to implement the Medication Clinic then please join the community there.
 
 
 # Contributing
