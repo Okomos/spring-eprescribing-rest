@@ -18,10 +18,10 @@ package org.springframework.labs.eprescribing.repository;
 import java.util.Collection;
 
 import org.springframework.dao.DataAccessException;
-import org.springframework.labs.eprescribing.model.Vet;
+import org.springframework.labs.eprescribing.model.Prescriber;
 
 /**
- * Repository class for <code>Vet</code> domain objects All method names are compliant with Spring Data naming
+ * Repository class for <code>Prescriber</code> domain objects All method names are compliant with Spring Data naming
  * conventions so this interface can easily be extended for Spring Data See here: http://static.springsource.org/spring-data/jpa/docs/current/reference/html/jpa.repositories.html#jpa.query-methods.query-creation
  *
  * @author Ken Krebs
@@ -30,20 +30,20 @@ import org.springframework.labs.eprescribing.model.Vet;
  * @author Michael Isvy
  * @author Vitaliy Fedoriv
  */
-public interface VetRepository {
+public interface PrescriberRepository {
 
     /**
-     * Retrieve all <code>Vet</code>s from the data store.
+     * Retrieve all <code>Prescriber</code>s from the data store.
      *
-     * @return a <code>Collection</code> of <code>Vet</code>s
+     * @return a <code>Collection</code> of <code>Prescriber</code>s
      */
-    Collection<Vet> findAll() throws DataAccessException;
+    Collection<Prescriber> findAll() throws DataAccessException;
     
-	Vet findById(int id) throws DataAccessException;
+	Prescriber findById(int id) throws DataAccessException;
 
-	void save(Vet vet) throws DataAccessException;
+	void save(Prescriber prescriber) throws DataAccessException;
 	
-	void delete(Vet vet) throws DataAccessException;
+	void delete(Prescriber prescriber) throws DataAccessException;
 
 
 }

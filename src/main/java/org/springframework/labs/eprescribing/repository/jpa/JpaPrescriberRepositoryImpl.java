@@ -17,8 +17,8 @@ package org.springframework.labs.eprescribing.repository.jpa;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.dao.DataAccessException;
-import org.springframework.labs.eprescribing.model.Vet;
-import org.springframework.labs.eprescribing.repository.VetRepository;
+import org.springframework.labs.eprescribing.model.Prescriber;
+import org.springframework.labs.eprescribing.repository.PrescriberRepository;
 import org.springframework.stereotype.Repository;
 
 import jakarta.persistence.EntityManager;
@@ -26,7 +26,7 @@ import jakarta.persistence.PersistenceContext;
 import java.util.Collection;
 
 /**
- * JPA implementation of the {@link VetRepository} interface.
+ * JPA implementation of the {@link PrescriberRepository} interface.
  *
  * @author Mike Keith
  * @author Rod Johnson
@@ -36,35 +36,35 @@ import java.util.Collection;
  */
 @Repository
 @Profile("jpa")
-public class JpaVetRepositoryImpl implements VetRepository {
+public class JpaPrescriberRepositoryImpl implements PrescriberRepository {
 
     @PersistenceContext
     private EntityManager em;
 
 
 	@Override
-	public Vet findById(int id) throws DataAccessException {
-		return this.em.find(Vet.class, id);
+	public Prescriber findById(int id) throws DataAccessException {
+		return this.em.find(Prescriber.class, id);
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public Collection<Vet> findAll() throws DataAccessException {
-		return this.em.createQuery("SELECT vet FROM Vet vet").getResultList();
+	public Collection<Prescriber> findAll() throws DataAccessException {
+		return this.em.createQuery("SELECT prescriber FROM Prescriber prescriber").getResultList();
 	}
 
 	@Override
-	public void save(Vet vet) throws DataAccessException {
-        if (vet.getId() == null) {
-            this.em.persist(vet);
+	public void save(Prescriber prescriber) throws DataAccessException {
+        if (prescriber.getId() == null) {
+            this.em.persist(prescriber);
         } else {
-            this.em.merge(vet);
+            this.em.merge(prescriber);
         }
 	}
 
 	@Override
-	public void delete(Vet vet) throws DataAccessException {
-		this.em.remove(this.em.contains(vet) ? vet : this.em.merge(vet));
+	public void delete(Prescriber prescriber) throws DataAccessException {
+		this.em.remove(this.em.contains(prescriber) ? prescriber : this.em.merge(prescriber));
 	}
 
 

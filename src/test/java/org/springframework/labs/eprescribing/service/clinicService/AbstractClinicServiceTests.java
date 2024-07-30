@@ -164,14 +164,14 @@ abstract class AbstractClinicServiceTests {
     }
 
     @Test
-    void shouldFindVets() {
-        Collection<Vet> vets = this.clinicService.findVets();
+    void shouldFindPrescribers() {
+        Collection<Prescriber> prescribers = this.clinicService.findPrescribers();
 
-        Vet vet = EntityUtils.getById(vets, Vet.class, 3);
-        assertThat(vet.getLastName()).isEqualTo("Douglas");
-        assertThat(vet.getNrOfSpecialties()).isEqualTo(2);
-        assertThat(vet.getSpecialties().get(0).getName()).isEqualTo("dentistry");
-        assertThat(vet.getSpecialties().get(1).getName()).isEqualTo("surgery");
+        Prescriber prescriber = EntityUtils.getById(prescribers, Prescriber.class, 3);
+        assertThat(prescriber.getLastName()).isEqualTo("Douglas");
+        assertThat(prescriber.getNrOfSpecialties()).isEqualTo(2);
+        assertThat(prescriber.getSpecialties().get(0).getName()).isEqualTo("dentistry");
+        assertThat(prescriber.getSpecialties().get(1).getName()).isEqualTo("surgery");
     }
 
     @Test
@@ -285,52 +285,52 @@ abstract class AbstractClinicServiceTests {
     }
 
     @Test
-    void shouldFindVetDyId(){
-    	Vet vet = this.clinicService.findVetById(1);
-    	assertThat(vet.getFirstName()).isEqualTo("James");
-    	assertThat(vet.getLastName()).isEqualTo("Carter");
+    void shouldFindPrescriberDyId(){
+    	Prescriber prescriber = this.clinicService.findPrescriberById(1);
+    	assertThat(prescriber.getFirstName()).isEqualTo("James");
+    	assertThat(prescriber.getLastName()).isEqualTo("Carter");
     }
 
     @Test
     @Transactional
-    void shouldInsertVet() {
-        Collection<Vet> vets = this.clinicService.findAllVets();
-        int found = vets.size();
+    void shouldInsertPrescriber() {
+        Collection<Prescriber> prescribers = this.clinicService.findAllPrescribers();
+        int found = prescribers.size();
 
-        Vet vet = new Vet();
-        vet.setFirstName("John");
-        vet.setLastName("Dow");
+        Prescriber prescriber = new Prescriber();
+        prescriber.setFirstName("John");
+        prescriber.setLastName("Dow");
 
-        this.clinicService.saveVet(vet);
-        assertThat(vet.getId().longValue()).isNotEqualTo(0);
+        this.clinicService.savePrescriber(prescriber);
+        assertThat(prescriber.getId().longValue()).isNotEqualTo(0);
 
-        vets = this.clinicService.findAllVets();
-        assertThat(vets.size()).isEqualTo(found + 1);
+        prescribers = this.clinicService.findAllPrescribers();
+        assertThat(prescribers.size()).isEqualTo(found + 1);
     }
 
     @Test
     @Transactional
-    void shouldUpdateVet(){
-    	Vet vet = this.clinicService.findVetById(1);
-    	String oldLastName = vet.getLastName();
+    void shouldUpdatePrescriber(){
+    	Prescriber prescriber = this.clinicService.findPrescriberById(1);
+    	String oldLastName = prescriber.getLastName();
         String newLastName = oldLastName + "X";
-        vet.setLastName(newLastName);
-        this.clinicService.saveVet(vet);
-        vet = this.clinicService.findVetById(1);
-        assertThat(vet.getLastName()).isEqualTo(newLastName);
+        prescriber.setLastName(newLastName);
+        this.clinicService.savePrescriber(prescriber);
+        prescriber = this.clinicService.findPrescriberById(1);
+        assertThat(prescriber.getLastName()).isEqualTo(newLastName);
     }
 
     @Test
     @Transactional
-    void shouldDeleteVet(){
-    	Vet vet = this.clinicService.findVetById(1);
-        this.clinicService.deleteVet(vet);
+    void shouldDeletePrescriber(){
+    	Prescriber prescriber = this.clinicService.findPrescriberById(1);
+        this.clinicService.deletePrescriber(prescriber);
         try {
-        	vet = this.clinicService.findVetById(1);
+        	prescriber = this.clinicService.findPrescriberById(1);
 		} catch (Exception e) {
-			vet = null;
+			prescriber = null;
 		}
-        assertThat(vet).isNull();
+        assertThat(prescriber).isNull();
     }
 
     @Test

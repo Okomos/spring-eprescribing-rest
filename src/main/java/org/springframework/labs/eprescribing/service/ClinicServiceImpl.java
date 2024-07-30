@@ -27,13 +27,13 @@ import org.springframework.labs.eprescribing.model.Owner;
 import org.springframework.labs.eprescribing.model.Medication;
 import org.springframework.labs.eprescribing.model.MedicationType;
 import org.springframework.labs.eprescribing.model.Specialty;
-import org.springframework.labs.eprescribing.model.Vet;
+import org.springframework.labs.eprescribing.model.Prescriber;
 import org.springframework.labs.eprescribing.model.Prescription;
 import org.springframework.labs.eprescribing.repository.OwnerRepository;
 import org.springframework.labs.eprescribing.repository.MedicationRepository;
 import org.springframework.labs.eprescribing.repository.MedicationTypeRepository;
 import org.springframework.labs.eprescribing.repository.SpecialtyRepository;
-import org.springframework.labs.eprescribing.repository.VetRepository;
+import org.springframework.labs.eprescribing.repository.PrescriberRepository;
 import org.springframework.labs.eprescribing.repository.PrescriptionRepository;
 import org.springframework.orm.ObjectRetrievalFailureException;
 import org.springframework.stereotype.Service;
@@ -50,7 +50,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class ClinicServiceImpl implements ClinicService {
 
     private MedicationRepository medicationRepository;
-    private VetRepository vetRepository;
+    private PrescriberRepository prescriberRepository;
     private OwnerRepository ownerRepository;
     private PrescriptionRepository prescriptionRepository;
     private SpecialtyRepository specialtyRepository;
@@ -59,13 +59,13 @@ public class ClinicServiceImpl implements ClinicService {
     @Autowired
      public ClinicServiceImpl(
        		 MedicationRepository medicationRepository,
-    		 VetRepository vetRepository,
+    		 PrescriberRepository prescriberRepository,
     		 OwnerRepository ownerRepository,
     		 PrescriptionRepository prescriptionRepository,
     		 SpecialtyRepository specialtyRepository,
 			 MedicationTypeRepository medicationTypeRepository) {
         this.medicationRepository = medicationRepository;
-        this.vetRepository = vetRepository;
+        this.prescriberRepository = prescriberRepository;
         this.ownerRepository = ownerRepository;
         this.prescriptionRepository = prescriptionRepository;
         this.specialtyRepository = specialtyRepository;
@@ -111,33 +111,33 @@ public class ClinicServiceImpl implements ClinicService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Vet findVetById(int id) throws DataAccessException {
-		Vet vet = null;
+	public Prescriber findPrescriberById(int id) throws DataAccessException {
+		Prescriber prescriber = null;
 		try {
-			vet = vetRepository.findById(id);
+			prescriber = prescriberRepository.findById(id);
 		} catch (ObjectRetrievalFailureException|EmptyResultDataAccessException e) {
 		// just ignore not found exceptions for Jdbc/Jpa realization
 			return null;
 		}
-		return vet;
+		return prescriber;
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public Collection<Vet> findAllVets() throws DataAccessException {
-		return vetRepository.findAll();
+	public Collection<Prescriber> findAllPrescribers() throws DataAccessException {
+		return prescriberRepository.findAll();
 	}
 
 	@Override
 	@Transactional
-	public void saveVet(Vet vet) throws DataAccessException {
-		vetRepository.save(vet);
+	public void savePrescriber(Prescriber prescriber) throws DataAccessException {
+		prescriberRepository.save(prescriber);
 	}
 
 	@Override
 	@Transactional
-	public void deleteVet(Vet vet) throws DataAccessException {
-		vetRepository.delete(vet);
+	public void deletePrescriber(Prescriber prescriber) throws DataAccessException {
+		prescriberRepository.delete(prescriber);
 	}
 
 	@Override
@@ -261,8 +261,8 @@ public class ClinicServiceImpl implements ClinicService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Collection<Vet> findVets() throws DataAccessException {
-		return vetRepository.findAll();
+	public Collection<Prescriber> findPrescribers() throws DataAccessException {
+		return prescriberRepository.findAll();
 	}
 
 	@Override

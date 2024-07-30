@@ -107,7 +107,7 @@ class MedicationTypeRestControllerTests {
 
     @Test
     @WithMockUser(roles="VET_ADMIN")
-    void testGetMedicationTypeSuccessAsVetAdmin() throws Exception {
+    void testGetMedicationTypeSuccessAsPrescriberAdmin() throws Exception {
         given(this.clinicService.findMedicationTypeById(1)).willReturn(medicationTypes.get(0));
         this.mockMvc.perform(get("/api/medicationtypes/1")
             .accept(MediaType.APPLICATION_JSON_VALUE))
@@ -144,7 +144,7 @@ class MedicationTypeRestControllerTests {
 
     @Test
     @WithMockUser(roles="VET_ADMIN")
-    void testGetAllMedicationTypesSuccessAsVetAdmin() throws Exception {
+    void testGetAllMedicationTypesSuccessAsPrescriberAdmin() throws Exception {
         medicationTypes.remove(0);
         medicationTypes.remove(1);
         given(this.clinicService.findAllMedicationTypes()).willReturn(medicationTypes);

@@ -17,16 +17,16 @@ package org.springframework.labs.eprescribing.repository.springdatajpa;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.repository.Repository;
-import org.springframework.labs.eprescribing.model.Vet;
-import org.springframework.labs.eprescribing.repository.VetRepository;
+import org.springframework.labs.eprescribing.model.Prescriber;
+import org.springframework.labs.eprescribing.repository.PrescriberRepository;
 
 /**
- * Spring Data JPA specialization of the {@link VetRepository} interface
+ * Spring Data JPA specialization of the {@link PrescriberRepository} interface
  *
  * @author Michael Isvy
  * @since 15.1.2013
  */
 
 @Profile("spring-data-jpa")
-public interface SpringDataVetRepository extends VetRepository, Repository<Vet, Integer> {
+public interface SpringDataPrescriberRepository extends PrescriberRepository, Repository<Prescriber, Integer> {
 }

@@ -1,5 +1,5 @@
-DROP TABLE vet_specialties IF EXISTS;
-DROP TABLE vets IF EXISTS;
+DROP TABLE prescriber_specialties IF EXISTS;
+DROP TABLE prescribers IF EXISTS;
 DROP TABLE specialties IF EXISTS;
 DROP TABLE prescriptions IF EXISTS;
 DROP TABLE medications IF EXISTS;
@@ -9,12 +9,12 @@ DROP TABLE roles IF EXISTS;
 DROP TABLE users IF EXISTS;
 
 
-CREATE TABLE vets (
+CREATE TABLE prescribers (
   id         INTEGER IDENTITY PRIMARY KEY,
   first_name VARCHAR(30),
   last_name  VARCHAR(30)
 );
-CREATE INDEX vets_last_name ON vets (last_name);
+CREATE INDEX prescribers_last_name ON prescribers (last_name);
 
 CREATE TABLE specialties (
   id   INTEGER IDENTITY PRIMARY KEY,
@@ -22,12 +22,12 @@ CREATE TABLE specialties (
 );
 CREATE INDEX specialties_name ON specialties (name);
 
-CREATE TABLE vet_specialties (
-  vet_id       INTEGER NOT NULL,
+CREATE TABLE prescriber_specialties (
+  prescriber_id       INTEGER NOT NULL,
   specialty_id INTEGER NOT NULL
 );
-ALTER TABLE vet_specialties ADD CONSTRAINT fk_vet_specialties_vets FOREIGN KEY (vet_id) REFERENCES vets (id);
-ALTER TABLE vet_specialties ADD CONSTRAINT fk_vet_specialties_specialties FOREIGN KEY (specialty_id) REFERENCES specialties (id);
+ALTER TABLE prescriber_specialties ADD CONSTRAINT fk_prescriber_specialties_prescribers FOREIGN KEY (prescriber_id) REFERENCES prescribers (id);
+ALTER TABLE prescriber_specialties ADD CONSTRAINT fk_prescriber_specialties_specialties FOREIGN KEY (specialty_id) REFERENCES specialties (id);
 
 CREATE TABLE types (
   id   INTEGER IDENTITY PRIMARY KEY,

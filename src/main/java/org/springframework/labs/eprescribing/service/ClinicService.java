@@ -24,7 +24,7 @@ import org.springframework.labs.eprescribing.model.Owner;
 import org.springframework.labs.eprescribing.model.Medication;
 import org.springframework.labs.eprescribing.model.MedicationType;
 import org.springframework.labs.eprescribing.model.Specialty;
-import org.springframework.labs.eprescribing.model.Vet;
+import org.springframework.labs.eprescribing.model.Prescriber;
 import org.springframework.labs.eprescribing.model.Prescription;
 
 /**
@@ -45,11 +45,11 @@ public interface ClinicService {
 	Collection<Prescription> findAllPrescriptions() throws DataAccessException;
 	void savePrescription(Prescription prescription) throws DataAccessException;
 	void deletePrescription(Prescription prescription) throws DataAccessException;
-	Vet findVetById(int id) throws DataAccessException;
-	Collection<Vet> findVets() throws DataAccessException;
-	Collection<Vet> findAllVets() throws DataAccessException;
-	void saveVet(Vet vet) throws DataAccessException;
-	void deleteVet(Vet vet) throws DataAccessException;
+	Prescriber findPrescriberById(int id) throws DataAccessException;
+	Collection<Prescriber> findPrescribers() throws DataAccessException;
+	Collection<Prescriber> findAllPrescribers() throws DataAccessException;
+	void savePrescriber(Prescriber prescriber) throws DataAccessException;
+	void deletePrescriber(Prescriber prescriber) throws DataAccessException;
 	Owner findOwnerById(int id) throws DataAccessException;
 	Collection<Owner> findAllOwners() throws DataAccessException;
 	void saveOwner(Owner owner) throws DataAccessException;

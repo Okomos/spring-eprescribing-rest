@@ -19,7 +19,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
 /**
- * Models a {@link Vet Vet's} specialty (for example, dentistry).
+ * Models a {@link Prescriber Prescriber's} specialty (for example, dentistry).
  *
  * @author Juergen Hoeller
  */

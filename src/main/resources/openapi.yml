@@ -17,14 +17,14 @@ tags:
     description: Endpoints related to users.
   - name: medication
     description: Endpoints related to medications.
-  - name: vet
-    description: Endpoints related to vets.
+  - name: prescriber
+    description: Endpoints related to prescribers.
   - name: prescription
-    description: Endpoints related to vet prescriptions.
+    description: Endpoints related to prescriber prescriptions.
   - name: medicationtypes
     description: Endpoints related to medication types.
   - name: specialty
-    description: Endpoints related to vet specialties.
+    description: Endpoints related to prescriber specialties.
 paths:
   /oops:
     get:
@@ -459,8 +459,8 @@ paths:
       tags:
         - prescription
       operationId: addPrescriptionToOwner
-      summary: Adds a vet prescription
-      description: Records the details of a new vet prescription.
+      summary: Adds a prescriber prescription
+      description: Records the details of a new prescriber prescription.
       parameters:
         - name: ownerId
           in: path
@@ -481,7 +481,7 @@ paths:
             minimum: 0
             example: 1
       requestBody:
-        description: The details of the new vet prescription.
+        description: The details of the new prescriber prescription.
         content:
           application/json:
             schema:
@@ -489,7 +489,7 @@ paths:
         required: true
       responses:
         201:
-          description: The vet prescription was sucessfully added.
+          description: The prescriber prescription was sucessfully added.
           content:
             application/json:
               schema:
@@ -1517,16 +1517,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RestError'
-  /vets:
+  /prescribers:
     get:
       tags:
-        - vet
-      operationId: listVets
-      summary: Lists vets
-      description: Returns an array of vets.
+        - prescriber
+      operationId: listPrescribers
+      summary: Lists prescribers
+      description: Returns an array of prescribers.
       responses:
         200:
-          description: Vets found and returned.
+          description: Prescribers found and returned.
           headers:
             ETag:
               description: An ID for this version of the response.
@@ -1537,7 +1537,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Vet'
+                  $ref: '#/components/schemas/Prescriber'
         304:
           description: Not modified.
           headers:
@@ -1554,20 +1554,20 @@ paths:
 
     post:
       tags:
-        - vet
-      operationId: addVet
-      summary: Create a Vet
-      description: Creates a vet .
+        - prescriber
+      operationId: addPrescriber
+      summary: Create a Prescriber
+      description: Creates a prescriber .
       requestBody:
-        description: The vet
+        description: The prescriber
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Vet'
+              $ref: '#/components/schemas/Prescriber'
         required: true
       responses:
         200:
-          description: Vet created successfully.
+          description: Prescriber created successfully.
           headers:
             ETag:
               description: An ID for this version of the response.
@@ -1576,7 +1576,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Vet'
+                $ref: '#/components/schemas/Prescriber'
         304:
           description: Not modified.
           headers:
@@ -1591,7 +1591,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/RestError'
         404:
-          description: Vet not found.
+          description: Prescriber not found.
           content:
             application/json:
               schema:
@@ -1602,17 +1602,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/RestError'
-  /vets/{vetId}:
+  /prescribers/{prescriberId}:
     get:
       tags:
-        - vet
-      operationId: getVet
-      summary: Get a vet by ID
-      description: Returns the vet or a 404 error.
+        - prescriber
+      operationId: getPrescriber
+      summary: Get a prescriber by ID
+      description: Returns the prescriber or a 404 error.
       parameters:
-        - name: vetId
+        - name: prescriberId
           in: path
-          description: The ID of the vet.
+          description: The ID of the prescriber.
           required: true
           schema:
             type: integer
@@ -1621,7 +1621,7 @@ paths:
             example: 1
       responses:
         200:
-          description: Vet details found and returned.
+          description: Prescriber details found and returned.
           headers:
             ETag:
               description: An ID for this version of the response.
@@ -1630,7 +1630,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Vet'
+                $ref: '#/components/schemas/Prescriber'
         304:
           description: Not modified.
           headers:
@@ -1645,7 +1645,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/RestError'
         404:
-          description: Vet not found.
+          description: Prescriber not found.
           content:
             application/json:
               schema:
@@ -1658,14 +1658,14 @@ paths:
                 $ref: '#/components/schemas/RestError'
     put:
       tags:
-        - vet
-      operationId: updateVet
-      summary: Update a vet  by ID
-      description: Returns the vet or a 404 error.
+        - prescriber
+      operationId: updatePrescriber
+      summary: Update a prescriber  by ID
+      description: Returns the prescriber or a 404 error.
       parameters:
-        - name: vetId
+        - name: prescriberId
           in: path
-          description: The ID of the vet.
+          description: The ID of the prescriber.
           required: true
           schema:
             type: integer
@@ -1673,11 +1673,11 @@ paths:
             minimum: 0
             example: 1
       requestBody:
-        description: The vet
+        description: The prescriber
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Vet'
+              $ref: '#/components/schemas/Prescriber'
         required: true
       responses:
         200:
@@ -1690,7 +1690,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Vet'
+                $ref: '#/components/schemas/Prescriber'
         304:
           description: Not modified.
           headers:
@@ -1705,7 +1705,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/RestError'
         404:
-          description: Vet not found.
+          description: Prescriber not found.
           content:
             application/json:
               schema:
@@ -1718,14 +1718,14 @@ paths:
                 $ref: '#/components/schemas/RestError'
     delete:
       tags:
-        - vet
-      operationId: deleteVet
-      summary: Delete a vet by ID
-      description: Returns the vet or a 404 error.
+        - prescriber
+      operationId: deletePrescriber
+      summary: Delete a prescriber by ID
+      description: Returns the prescriber or a 404 error.
       parameters:
-        - name: vetId
+        - name: prescriberId
           in: path
-          description: The ID of the vet.
+          description: The ID of the prescriber.
           required: true
           schema:
             type: integer
@@ -1734,7 +1734,7 @@ paths:
             example: 1
       responses:
         200:
-          description: Vet details found and returned.
+          description: Prescriber details found and returned.
           headers:
             ETag:
               description: An ID for this version of the response.
@@ -1743,7 +1743,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Vet'
+                $ref: '#/components/schemas/Prescriber'
         304:
           description: Not modified.
           headers:
@@ -1758,7 +1758,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/RestError'
         404:
-          description: Vet not found.
+          description: Prescriber not found.
           content:
             application/json:
               schema:
@@ -1895,7 +1895,7 @@ components:
       additionalProperties: true
     Specialty:
       title: Specialty
-      description: Fields of specialty of vets.
+      description: Fields of specialty of prescribers.
       type: object
       properties:
         id:
@@ -1982,7 +1982,7 @@ components:
               readOnly: true
             medications:
               title: Medications
-              description: The medications owned by this individual including any booked vet prescriptions.
+              description: The medications owned by this individual including any booked prescriber prescriptions.
               type: array
               items:
                 $ref: '#/components/schemas/Medication'
@@ -2037,7 +2037,7 @@ components:
               readOnly: true
             prescriptions:
               title: Prescriptions
-              description: Vet prescription bookings for this medication.
+              description: Prescriber prescription bookings for this medication.
               type: array
               items:
                 $ref: '#/components/schemas/Prescription'
@@ -2046,14 +2046,14 @@ components:
             - id
             - type
             - prescriptions
-    VetFields:
-      title: VetFields
-      description: Editable fields of a veterinarian.
+    PrescriberFields:
+      title: PrescriberFields
+      description: Editable fields of a prescribererinarian.
       type: object
       properties:
         firstName:
           title: First name
-          description: The first name of the vet.
+          description: The first name of the prescriber.
           type: string
           minLength: 1
           maxLength: 30
@@ -2061,7 +2061,7 @@ components:
           example: 'James'
         lastName:
           title: Last name
-          description: The last name of the vet.
+          description: The last name of the prescriber.
           type: string
           minLength: 1
           maxLength: 30
@@ -2069,7 +2069,7 @@ components:
           example: 'Carter'
         specialties:
           title: Specialties
-          description: The specialties of the vet.
+          description: The specialties of the prescriber.
           type: array
           items:
             $ref: '#/components/schemas/Specialty'
@@ -2077,16 +2077,16 @@ components:
         - firstName
         - lastName
         - specialties
-    Vet:
-      title: Vet
-      description: A veterinarian.
+    Prescriber:
+      title: Prescriber
+      description: A prescribererinarian.
       allOf:
-        - $ref: '#/components/schemas/VetFields'
+        - $ref: '#/components/schemas/PrescriberFields'
         - type: object
           properties:
             id:
               title: ID
-              description: The ID of the vet.
+              description: The ID of the prescriber.
               type: integer
               format: int32
               minimum: 0
@@ -2099,7 +2099,7 @@ components:
         - specialties
     PrescriptionFields:
       title: Prescription fields
-      description: Editable fields of a vet prescription.
+      description: Editable fields of a prescriber prescription.
       type: object
       properties:
         date:
@@ -2119,7 +2119,7 @@ components:
         - description
     Prescription:
       title: Prescription
-      description: A booking for a vet prescription.
+      description: A booking for a prescriber prescription.
       allOf:
         - $ref: '#/components/schemas/PrescriptionFields'
         - type: object

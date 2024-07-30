@@ -24,7 +24,7 @@ import jakarta.xml.bind.annotation.XmlElement;
 import java.util.*;
 
 /**
- * Simple JavaBean domain object representing a veterinarian.
+ * Simple JavaBean domain object representing a prescribererinarian.
  *
  * @author Ken Krebs
  * @author Juergen Hoeller
@@ -32,11 +32,11 @@ import java.util.*;
  * @author Arjen Poutsma
  */
 @Entity
-@Table(name = "vets")
-public class Vet extends Person {
+@Table(name = "prescribers")
+public class Prescriber extends Person {
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "vet_specialties", joinColumns = @JoinColumn(name = "vet_id"),
+    @JoinTable(name = "prescriber_specialties", joinColumns = @JoinColumn(name = "prescriber_id"),
         inverseJoinColumns = @JoinColumn(name = "specialty_id"))
     private Set<Specialty> specialties;
 

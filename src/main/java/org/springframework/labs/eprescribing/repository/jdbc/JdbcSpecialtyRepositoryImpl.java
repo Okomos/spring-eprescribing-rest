@@ -114,7 +114,7 @@ public class JdbcSpecialtyRepositoryImpl implements SpecialtyRepository {
 	public void delete(Specialty specialty) throws DataAccessException {
 		Map<String, Object> params = new HashMap<>();
         params.put("id", specialty.getId());
-        this.namedParameterJdbcTemplate.update("DELETE FROM vet_specialties WHERE specialty_id=:id", params);
+        this.namedParameterJdbcTemplate.update("DELETE FROM prescriber_specialties WHERE specialty_id=:id", params);
         this.namedParameterJdbcTemplate.update("DELETE FROM specialties WHERE id=:id", params);
 	}
 

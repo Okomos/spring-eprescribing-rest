@@ -148,7 +148,7 @@ This will secure all APIs and in order to access them, basic authentication is r
 Apart from authentication, APIs also require authorization. This is done via roles that a user can have.
 The existing roles are listed below with the corresponding permissions 
 * OWNER_ADMIN -> OwnerController, MedicationController, MedicationTypeController (getAllMedicationTypes and getMedicationType), PrescriptionController
-* VET_ADMIN   -> MedicationTypeController, SpecialityController, VetController
+* VET_ADMIN   -> MedicationTypeController, SpecialityController, PrescriberController
 * ADMIN       -> UserController
 
 There is an existing user with the username `admin` and password `admin` that has access to all APIs.

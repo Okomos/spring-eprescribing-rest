@@ -39,7 +39,7 @@ class UserRestControllerTests {
     private MockMvc mockMvc;
 
     @BeforeEach
-    void initVets() {
+    void initPrescribers() {
         this.mockMvc = MockMvcBuilders.standaloneSetup(userRestController)
             .setControllerAdvice(new ExceptionControllerAdvice()).build();
     }
@@ -53,9 +53,9 @@ class UserRestControllerTests {
         user.setEnabled(true);
         user.addRole("OWNER_ADMIN");
         ObjectMapper mapper = new ObjectMapper();
-        String newVetAsJSON = mapper.writeValueAsString(userMapper.toUserDto(user));
+        String newPrescriberAsJSON = mapper.writeValueAsString(userMapper.toUserDto(user));
         this.mockMvc.perform(post("/api/users/")
-            .content(newVetAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
+            .content(newPrescriberAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isCreated());
     }
 
@@ -67,9 +67,9 @@ class UserRestControllerTests {
         user.setPassword("password");
         user.setEnabled(true);
         ObjectMapper mapper = new ObjectMapper();
-        String newVetAsJSON = mapper.writeValueAsString(userMapper.toUserDto(user));
+        String newPrescriberAsJSON = mapper.writeValueAsString(userMapper.toUserDto(user));
         this.mockMvc.perform(post("/api/users/")
-            .content(newVetAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
+            .content(newPrescriberAsJSON).accept(MediaType.APPLICATION_JSON_VALUE).contentType(MediaType.APPLICATION_JSON_VALUE))
             .andExpect(status().isBadRequest());
     }
 }
